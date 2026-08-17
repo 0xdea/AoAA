@@ -10,4 +10,4 @@
 >
 > -- Randall Hyde, The Art of ARM Assembly Language
 
-My code for [The Art of ARM Assembly Language](https://artofarm.randallhyde.com/), a book by Randall Hyde
+My code for [The Art of ARM Assembly Language](https://artofarm.randallhyde.com/), a book by Randall Hyde.
