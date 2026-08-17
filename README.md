@@ -10,4 +10,4 @@
 >
 > -- Randall Hyde, The Art of ARM Assembly Language
 
-My code for [The Art of ARM Assembly Language](https://artofarm.randallhyde.com/), a book by Randall Hyde.
+My code for [The Art of ARM Assembly Language](https://artofarm.randallhyde.com/), a book by Randall Hyde. All snippets were developed and tested on macOS Tahoe on an Apple Silicon M3 CPU.

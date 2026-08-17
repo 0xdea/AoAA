@@ -1,0 +1,71 @@
+#!/bin/bash
+
+#
+# build - Automatically builds an AoAA example program from the command line
+#
+# Usage:
+# $ build {options} fileName
+# (no suffix on the filename)
+#
+# Options:
+# -c: assemble .S file to object code only
+#
+
+fileName=""
+compileOnly=" "
+pie="-no-pie"
+cFile="c.cpp"
+lib=" "
+
+while [[ $# -gt 0 ]]; do
+
+	key="$1"
+	case $key in
+
+	-c)
+		compileOnly='-c'
+		shift
+		;;
+
+	*)
+		fileName="$1"
+		shift
+		;;
+	esac
+done
+
+# If -c option was provided, only assemble the .S file and produce a .o output file.
+# If -c not specified, compile both c.cpp and the .S file and produce an executable.
+
+if [ "$compileOnly" = '-c' ]; then
+	objectFile="-o $fileName".o
+	cFile=" "
+else
+	objectFile="-o $fileName"
+fi
+
+# If the user inadvertently stuck a .s or .S suffix on the file name, abort before we get in trouble.
+
+case $fileName in *.S)
+	echo "Argument should not have an .S suffix"
+	exit 0
+	;;
+esac
+
+case $fileName in *.s)
+	echo "Argument should not have an .s suffix"
+	exit 0
+	;;
+esac
+
+# If the executable already exists, delete it.
+if test -e "$fileName"; then
+	rm "$fileName"
+fi
+
+# If the object file already exists, delete it.
+if test -e "$fileName".o; then
+	rm "$fileName".o
+fi
+
+g++ $compileOnly $objectFile $cFile $fileName.S
