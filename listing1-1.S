@@ -19,7 +19,7 @@
 .text
 
 .global _main
-.balign 4
+.balign 4     // code must be 4-byte aligned
 
 _main:
 	ret

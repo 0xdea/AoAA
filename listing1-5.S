@@ -1,12 +1,16 @@
 // listing1-5.S - The venerable "Hello, world!" program
 //
 // ```
-// $ build listing1-5
+// $ ./build listing1-5
+// $ ./listing1-5
+// Calling Listing 1-5:
+// Hello, world!
+// Listing 1-5 terminated.
 // ```
 
 .macro lea reg, mem
-adrp   \reg, \mem@PAGE
-add    \reg, \reg, \mem@PAGEOFF
+adrp   \reg, \mem@PAGE          // \reg = page address of \mem
+add    \reg, \reg, \mem@PAGEOFF // \reg += offset within page
 .endm
 
 .text
@@ -20,12 +24,18 @@ _getTitle:
 	ret
 
 _asmMain:
+	// save LR
 	lea x0, saveLR
 	str lr, [x0]
+
+	// print "Hello, world!"
 	lea x0, hwStr
 	bl  _printf
+
+	// restore LR
 	lea x0, saveLR
 	ldr lr, [x0]
+
 	ret
 
 .data

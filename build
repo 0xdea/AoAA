@@ -14,7 +14,7 @@
 fileName=""
 compileOnly=" "
 pie="-no-pie"
-cFile="c.cpp"
+cFile="listing1-4.cpp"
 lib=" "
 
 while [[ $# -gt 0 ]]; do
