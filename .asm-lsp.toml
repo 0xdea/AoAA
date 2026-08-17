@@ -1,0 +1,6 @@
+[default_config]
+assembler = "gas"
+instruction_set = "arm64"
+
+[default_config.opts]
+compiler = "g++"
