@@ -19,7 +19,7 @@
 .text
 
 .global _main
-.align  2
+.balign 4
 
 _main:
 	ret
