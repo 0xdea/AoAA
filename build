@@ -38,7 +38,6 @@ fi
 # If the user inadvertently sticks a .s or .S suffix on the file name, abort before we get in trouble.
 # Also reject a leading '-' (rm/g++ would parse it as an option) and any '/' (keeps the build confined
 # to a bare filename in the current directory).
-
 case "$fileName" in
 -*)
 	echo "Argument should not start with '-'" >&2
@@ -62,7 +61,7 @@ esac
 rm -f -- "$fileName" "$fileName".o
 
 # If the -c option was provided, only assemble the .S file and produce a .o output file.
-# Otherwise, compile both the .cpp and the .S file and produce an executable.
+# Otherwise, compile and link both the .cpp and the .S file and produce an executable.
 if $compileOnly; then
 	g++ -c -o "$fileName".o "$fileName".S
 else
