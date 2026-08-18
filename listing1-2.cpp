@@ -2,7 +2,7 @@
 //
 // ```
 // $ g++ listing1-2.cpp listing1-3.S -o listing1-2
-// $ objdump --disassemble listing1-2
+// $ objdump -d listing1-2 # or otool -tv listing1.2
 //
 // listing1-2:	file format mach-o arm64
 //

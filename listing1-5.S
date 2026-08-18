@@ -8,7 +8,7 @@
 // Listing 1-5 terminated.
 // ```
 
-.macro lea reg, mem
+.macro adrl reg, mem
 adrp   \reg, \mem@PAGE          // \reg = page address of \mem
 add    \reg, \reg, \mem@PAGEOFF // \reg += offset within page
 .endm
@@ -20,21 +20,21 @@ add    \reg, \reg, \mem@PAGEOFF // \reg += offset within page
 .global _getTitle
 
 _getTitle:
-	lea x0, title
+	adrl x0, title
 	ret
 
 _asmMain:
 	// save LR
-	lea x0, saveLR
-	str lr, [x0]
+	adrl x0, saveLR
+	str  lr, [x0]
 
 	// print "Hello, world!"
-	lea x0, hwStr
-	bl  _printf
+	adrl x0, hwStr
+	bl   _printf
 
 	// restore LR
-	lea x0, saveLR
-	ldr lr, [x0]
+	adrl x0, saveLR
+	ldr  lr, [x0]
 
 	ret
 

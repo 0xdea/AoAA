@@ -2,7 +2,7 @@
 //
 // ```
 // $ g++ listing1-4.cpp <listingC-N>.S -o listing1-4
-// $ objdump --disassemble listing1-4
+// $ objdump -d listing1-4 # or otool -tv listing1.4
 // ...
 // $ sudo dtruss ./listing1-4
 // ...
