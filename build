@@ -4,29 +4,25 @@
 # build - Automatically builds an AoAA example program from the command line
 #
 # Usage:
-# $ build {options} fileName
+# $ build [-c] <filename>
 # (no suffix on the filename)
 #
 # Options:
 # -c: assemble .S file to object code only
 #
 
+set -euo pipefail
+
 fileName=""
-compileOnly=" "
-pie="-no-pie"
+compileOnly=false
 cFile="listing1-4.cpp"
-lib=" "
 
 while [[ $# -gt 0 ]]; do
-
-	key="$1"
-	case $key in
-
+	case "$1" in
 	-c)
-		compileOnly='-c'
+		compileOnly=true
 		shift
 		;;
-
 	*)
 		fileName="$1"
 		shift
@@ -34,38 +30,31 @@ while [[ $# -gt 0 ]]; do
 	esac
 done
 
-# If -c option was provided, only assemble the .S file and produce a .o output file.
-# If -c not specified, compile both c.cpp and the .S file and produce an executable.
-
-if [ "$compileOnly" = '-c' ]; then
-	objectFile="-o $fileName".o
-	cFile=" "
-else
-	objectFile="-o $fileName"
+if [[ -z "$fileName" ]]; then
+	echo "Usage: build [-c] <filename>" >&2
+	exit 1
 fi
 
 # If the user inadvertently stuck a .s or .S suffix on the file name, abort before we get in trouble.
 
-case $fileName in *.S)
-	echo "Argument should not have an .S suffix"
-	exit 0
+case "$fileName" in
+*.S)
+	echo "Argument should not have an .S suffix" >&2
+	exit 1
+	;;
+*.s)
+	echo "Argument should not have an .s suffix" >&2
+	exit 1
 	;;
 esac
 
-case $fileName in *.s)
-	echo "Argument should not have an .s suffix"
-	exit 0
-	;;
-esac
+# Delete any stale executable/object file.
+rm -f "$fileName" "$fileName".o
 
-# If the executable already exists, delete it.
-if test -e "$fileName"; then
-	rm "$fileName"
+# If the -c option was provided, only assemble the .S file and produce a .o output file.
+# Otherwise, compile both the .cpp and the .S file and produce an executable.
+if $compileOnly; then
+	g++ -c -o "$fileName".o "$fileName".S
+else
+	g++ -o "$fileName" "$cFile" "$fileName".S
 fi
-
-# If the object file already exists, delete it.
-if test -e "$fileName".o; then
-	rm "$fileName".o
-fi
-
-g++ $compileOnly $objectFile $cFile $fileName.S
