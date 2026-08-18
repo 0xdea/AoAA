@@ -5,7 +5,7 @@
 #
 # Usage:
 # $ build [-c] <filename>
-# (no suffix on the filename)
+# (no extension in the filename)
 #
 # Options:
 # -c: assemble .S file to object code only
@@ -13,32 +13,32 @@
 
 set -euo pipefail
 
-fileName=""
-compileOnly=false
-cFile="listing1-4.cpp"
+filename=""
+compileonly=false
+cppfile="listing1-4.cpp"
 
+# Parse command line arguments.
 while [[ $# -gt 0 ]]; do
 	case "$1" in
 	-c)
-		compileOnly=true
+		compileonly=true
 		shift
 		;;
 	*)
-		fileName="$1"
+		filename="$1"
 		shift
 		;;
 	esac
 done
 
-if [[ -z "$fileName" ]]; then
+if [[ -z "$filename" ]]; then
 	echo "Usage: build [-c] <filename>" >&2
 	exit 1
 fi
 
-# If the user inadvertently sticks a .s or .S suffix on the file name, abort before we get in trouble.
-# Also reject a leading '-' (rm/g++ would parse it as an option) and any '/' (keeps the build confined
-# to a bare filename in the current directory).
-case "$fileName" in
+# Exit if the user specifies a .s or .S extension in the file name. Also reject a leading '-' (rm/g++ would
+# parse it as an option) and any '/' (keeps the build confined to a bare filename in the current directory).
+case "$filename" in
 -*)
 	echo "Argument should not start with '-'" >&2
 	exit 1
@@ -48,22 +48,22 @@ case "$fileName" in
 	exit 1
 	;;
 *.S)
-	echo "Argument should not have an .S suffix" >&2
+	echo "Argument should not have an .S extension" >&2
 	exit 1
 	;;
 *.s)
-	echo "Argument should not have an .s suffix" >&2
+	echo "Argument should not have an .s extension" >&2
 	exit 1
 	;;
 esac
 
 # Delete any stale executable/object file.
-rm -f -- "$fileName" "$fileName".o
+rm -f -- "$filename" "$filename".o
 
 # If the -c option was provided, only assemble the .S file and produce a .o output file.
 # Otherwise, compile and link both the .cpp and the .S file and produce an executable.
-if $compileOnly; then
-	g++ -c -o "$fileName".o "$fileName".S
+if $compileonly; then
+	g++ -c -o "$filename".o "$filename".S
 else
-	g++ -o "$fileName" "$cFile" "$fileName".S
+	g++ -o "$filename" "$cppfile" "$filename".S
 fi
