@@ -35,9 +35,19 @@ if [[ -z "$fileName" ]]; then
 	exit 1
 fi
 
-# If the user inadvertently stuck a .s or .S suffix on the file name, abort before we get in trouble.
+# If the user inadvertently sticks a .s or .S suffix on the file name, abort before we get in trouble.
+# Also reject a leading '-' (rm/g++ would parse it as an option) and any '/' (keeps the build confined
+# to a bare filename in the current directory).
 
 case "$fileName" in
+-*)
+	echo "Argument should not start with '-'" >&2
+	exit 1
+	;;
+*/*)
+	echo "Argument should be a bare filename, not a path" >&2
+	exit 1
+	;;
 *.S)
 	echo "Argument should not have an .S suffix" >&2
 	exit 1
@@ -49,7 +59,7 @@ case "$fileName" in
 esac
 
 # Delete any stale executable/object file.
-rm -f "$fileName" "$fileName".o
+rm -f -- "$fileName" "$fileName".o
 
 # If the -c option was provided, only assemble the .S file and produce a .o output file.
 # Otherwise, compile both the .cpp and the .S file and produce an executable.
