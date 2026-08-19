@@ -158,4 +158,5 @@ saveLR:
 	.8byte 0
 
 input:
+	// alternatively, declare input in the bss section as follows: .lcomm input, maxLen
 	.space maxLen
