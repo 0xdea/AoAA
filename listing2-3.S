@@ -80,10 +80,10 @@ _asmMain:
 	bl     _printf
 
 	// invert all bits of the input number and add 1
-	adrl x0, intValue
-	ldr  x1, [x0]
-	add  x1, x1, #1
-	str  x1, [x0]
+	adrl x1, intValue
+	ldr  x0, [x1]
+	add  x0, x0, #1
+	str  x0, [x1]
 
 	adrl   x0, fmtStr3
 	vparm2 intValue
@@ -94,21 +94,21 @@ _asmMain:
 	bl     _printf
 
 	// negate the value and print as a signed integer (this will print the original value)
-	adrl x0, intValue
-	ldr  x1, [x0]
-	mvn  x1, x1
-	add  x1, x1, #1
-	str  x1, [x0]
+	adrl x1, intValue
+	ldr  x0, [x1]
+	mvn  x0, x0
+	add  x0, x0, #1
+	str  x0, [x1]
 
 	adrl   x0, fmtStr5
 	vparm2 intValue
 	bl     _printf
 
 	// directly perform the two's complement operation on the input number
-	adrl x0, intValue
-	ldr  x1, [x0]
-	neg  x1, x1
-	str  x1, [x0]
+	adrl x1, intValue
+	ldr  x0, [x1]
+	neg  x0, x0
+	str  x0, [x1]
 
 	adrl   x0, fmtStr6
 	vparm2 intValue
