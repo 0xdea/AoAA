@@ -79,7 +79,7 @@ _asmMain:
 	vparm2 intValue
 	bl     _printf
 
-	// invert all bits of the input number and add 1
+	// add 1 to the previously inverted input number
 	adrl x1, intValue
 	ldr  x0, [x1]
 	add  x0, x0, #1
@@ -93,7 +93,7 @@ _asmMain:
 	vparm2 intValue
 	bl     _printf
 
-	// negate the value and print as a signed integer (this will print the original value)
+	// negate the current value and print as a signed integer (this will print the original value)
 	adrl x1, intValue
 	ldr  x0, [x1]
 	mvn  x0, x0
