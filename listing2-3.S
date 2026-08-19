@@ -3,6 +3,15 @@
 // ```
 // $ ./build listing2-3
 // $ ./listing2-3
+// Calling Listing 2-3:
+// Enter an integer between 0 and 127: 123
+// Value in hexadecimal: 7b
+// Invert all the bits (hexadecimal): ffffff84
+// Add 1 (hexadecimal): ffffff85
+// Output as signed integer: -123
+// Negate again and output as signed integer: 123
+// Using neg instruction: -123
+// Listing 2-3 terminated.
 // ```
 
 .macro adrl reg, mem
