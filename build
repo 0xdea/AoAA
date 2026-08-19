@@ -13,7 +13,7 @@
 
 set -euo pipefail
 
-compiler="g++ -Wall -Wextra -Wpedantic"
+compiler="g++ -Wall -Wextra"
 filename=""
 compileonly=false
 cppfile="listing1-4.cpp"
