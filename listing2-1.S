@@ -33,8 +33,6 @@ str    x2, [sp, #8]
 .text
 .balign 4
 
-.extern _printf
-
 .global _getTitle
 
 _getTitle:
