@@ -37,6 +37,7 @@ ldr    x3, [x3]
 str    x3, [sp, #16]
 .endm
 
+// max input line size
 .equ maxLen, 256
 
 .text

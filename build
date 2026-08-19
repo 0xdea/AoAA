@@ -13,6 +13,7 @@
 
 set -euo pipefail
 
+compiler="g++ -Wall -Wextra -Wpedantic"
 filename=""
 compileonly=false
 cppfile="listing1-4.cpp"
@@ -63,7 +64,7 @@ rm -f -- "$filename" "$filename".o
 # If the -c option was provided, only assemble the .S file and produce a .o output file.
 # Otherwise, compile and link both the .cpp and the .S file and produce an executable.
 if $compileonly; then
-	g++ -c -o "$filename".o "$filename".S
+	$compiler -c -o "$filename".o "$filename".S
 else
-	g++ -o "$filename" "$cppfile" "$filename".S
+	$compiler -o "$filename" "$cppfile" "$filename".S
 fi
