@@ -218,7 +218,6 @@ allDone:
 	ret
 
 .data
-.balign 4
 
 titleStr:
 	.asciz "Listing 2-4b"
