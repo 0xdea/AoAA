@@ -54,12 +54,11 @@ _getTitle:
 	ret
 
 _asmMain:
+	// save LR
+	str lr, [sp, #-16]!
+
 	// make room on the stack
 	sub sp, sp, #256
-
-	// save LR
-	adrl x0, saveLR
-	str  lr, [x0]
 
 	// demonstrate the use of address expressions
 	adrl   x0, fmtStr1
@@ -90,12 +89,11 @@ _asmMain:
 	vparm2 outputVal
 	bl     _printf
 
-	// restore LR
-	adrl x0, saveLR
-	ldr  lr, [x0]
-
 	// restore stack pointer
 	add sp, sp, #256
+
+	// restore LR
+	ldr lr, [sp], #16
 
 	ret
 
@@ -118,6 +116,3 @@ fmtStr4:
 
 outputVal:
 	.4byte 0
-
-saveLR:
-	.8byte 0
