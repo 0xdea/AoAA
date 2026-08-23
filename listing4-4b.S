@@ -3,6 +3,20 @@
 // ```
 // $ ./build listing4-4b
 // $ ./listing4-4b
+// Calling Listing 4-4b:
+// Input a string: Hello world
+// 0: hex value of char read: 48
+// 1: hex value of char read: 65
+// 2: hex value of char read: 6c
+// 3: hex value of char read: 6c
+// 4: hex value of char read: 6f
+// 5: hex value of char read: 20
+// 6: hex value of char read: 77
+// 7: hex value of char read: 6f
+// 8: hex value of char read: 72
+// 9: hex value of char read: 6c
+// 10: hex value of char read: 64
+// Listing 4-4b terminated.
 // ```
 
 .macro adrl reg, mem
@@ -34,7 +48,7 @@ ldr    x4, [x4]
 str    x4, [sp, #24]
 .endm
 
-maxLen = 256
+maxlen = 256
 
 .text
 .balign 4
@@ -43,7 +57,7 @@ maxLen = 256
 .global _asmMain
 
 _getTitle:
-	adrl x0, titleStr
+	adrl x0, title
 	ret
 
 _asmMain:
@@ -51,60 +65,54 @@ _asmMain:
 	str lr, [sp, #-16]!
 	sub sp, sp, #256
 
-	// bufPtr = malloc(maxLen);
-	mov  x0, maxLen
+	// buf = malloc(maxlen);
+	mov  x0, maxlen
 	bl   _malloc
-	adrl x1, bufPtr
+	adrl x1, buf
 	str  x0, [x1]
 
 	// printf("Input a string: ");
 	adrl x0, prompt
 	bl   _printf
 
-	// bytesRead = readline(bufPtr, maxLen);
-	adrl x0, bufPtr
+	// nbytes = readline(buf, maxlen);
+	adrl x0, buf
 	ldr  x0, [x0]
-	mov  x1, maxLen
+	mov  x1, maxlen
 	bl   _readline
 
 	cmp x0, #-1
-	beq allDone
+	beq done
 
-	adrl x1, bytesRead
+	adrl x1, nbytes
 	str  x0, [x1]
 
+	// initialize loop variables
+	// x19: buffer pointer (callee-saved, survives the printf call)
+	// x20: buffer index (callee-saved, survives the printf call)
+	adrl x19, buf
+	ldr  x19, [x19]
+	mov  x20, xzr
+
 	// display the data back to the user
-	mov  x1, xzr
-	adrl x0, bufIndex
-	str  x1, [x0]
+loop:
+	ldrb w1, [x19, x20]
 
-dispLp:
-	adrl x0, bufIndex
-	ldr  x1, [x0]
-	adrl x2, bufPtr
-	ldr  x2, [x2]
-	ldrb w0, [x2, x1]
+	adrl x0, fmt
+	str  x20, [sp]
+	str  x1, [sp, #8]
+	bl   _printf
 
-	adrl   x1, valToPrint
-	strb   w0, [x1]
-	adrl   x0, fmtStr
-	vparm2 bufIndex
-	vparm3 valToPrint
-	bl     _printf
+	add x20, x20, #1
 
-	adrl x0, bufIndex
-	ldr  x1, [x0]
-	add  x1, x1, #1
-	str  x1, [x0]
-
-	adrl x0, bytesRead
+	adrl x0, nbytes
 	ldr  x0, [x0]
-	cmp  x1, x0
-	blo  dispLp
+	cmp  x20, x0
+	blo  loop
 
-allDone:
-	// free(bufPtr);
-	adrl x0, bufPtr
+done:
+	// free(buf);
+	adrl x0, buf
 	ldr  x0, [x0]
 	bl   _free
 
@@ -116,23 +124,17 @@ allDone:
 
 .data
 
-valToPrint:
-	.4byte .-.
-
-bufIndex:
+buf:
 	.8byte .-.
 
-bufPtr:
-	.8byte .-.
-
-bytesRead:
+nbytes:
 	.8byte .-.
 
 prompt:
 	.asciz "Input a string: "
 
-fmtStr:
+fmt:
 	.asciz "%d: hex value of char read: %x\n"
 
-titleStr:
-	.asciz "Listing 4-4"
+title:
+	.asciz "Listing 4-4b"
