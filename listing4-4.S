@@ -57,17 +57,19 @@ _asmMain:
 	adrl x1, bufPtr
 	str  x0, [x1]
 
-	// read a line of text from the user and place it in the newly allocated buffer
+	// printf("Input a string: ");
 	adrl x0, prompt
 	bl   _printf
 
+	// bytesRead = readline(bufPtr, maxLen);
 	adrl x0, bufPtr
 	ldr  x0, [x0]
 	mov  x1, maxLen
 	bl   _readline
 
-	cmp  x0, #-1
-	beq  allDone
+	cmp x0, #-1
+	beq allDone
+
 	adrl x1, bytesRead
 	str  x0, [x1]
 
@@ -77,11 +79,12 @@ _asmMain:
 	str  x1, [x0]
 
 dispLp:
-	adrl   x0, bufIndex
-	ldr    x1, [x0]
-	adrl   x2, bufPtr
-	ldr    x2, [x2]
-	ldr    w0, [x2, x1]
+	adrl x0, bufIndex
+	ldr  x1, [x0]
+	adrl x2, bufPtr
+	ldr  x2, [x2]
+	ldr  w0, [x2, x1] // bug: load 32-bit word instead of byte!
+
 	adrl   x1, valToPrint
 	str    w0, [x1]
 	adrl   x0, fmtStr
