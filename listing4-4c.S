@@ -66,7 +66,7 @@ _asmMain:
 	sub sp, sp, #64
 
 	// buf = malloc(maxlen);
-	mov  x0, maxlen
+	mov  x0, #maxlen
 	bl   _malloc
 	adrl x1, buf
 	str  x0, [x1]
@@ -78,7 +78,7 @@ _asmMain:
 	// nbytes = readline(buf, maxlen);
 	adrl x0, buf
 	ldr  x0, [x0]
-	mov  x1, maxlen
+	mov  x1, #maxlen
 	bl   _readline
 
 	cmp x0, xzr
