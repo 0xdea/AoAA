@@ -1,4 +1,4 @@
-// listing4-3.S - Demonstrates crash caused by uninitialized pointer
+// listing4-3.S - Demonstrates crash caused by uninitialized pointer dereference
 //
 // ```
 // $ ./build listing4-3
@@ -51,7 +51,7 @@ _asmMain:
 	str lr, [sp, #-16]!
 	sub sp, sp, #256
 
-	// demonstrate crash caused by uninitialized pointer
+	// demonstrate crash caused by uninitialized pointer dereference
 	adrl x0, ptrVar
 	ldr  x1, [x0]
 	ldr  x2, [x1]   // pointer dereference (crash!)
