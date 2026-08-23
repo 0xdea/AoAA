@@ -24,51 +24,37 @@ adrp   \reg, \mem@PAGE
 add    \reg, \reg, \mem@PAGEOFF
 .endm
 
-9:
-	hex value of char read: 646c
+.macro vparm2 mem
+adrl   x1, \mem
+ldr    x1, [x1]
+str    x1, [sp]
+.endm
 
-10:
-	hex     value of char read: 64
-	Listing 4-4 terminated.
+.macro vparm3 mem
+adrl   x2, \mem
+ldr    x2, [x2]
+str    x2, [sp, #8]
+.endm
 
-	// ```
+.macro vparm4 mem
+adrl   x3, \mem
+ldr    x3, [x3]
+str    x3, [sp, #16]
+.endm
 
-	.macro adrl reg, mem
-	adrp   \reg, \mem@PAGE
-	add    \reg, \reg, \mem@PAGEOFF
-	.endm
+.macro vparm5 mem
+adrl   x4, \mem
+ldr    x4, [x4]
+str    x4, [sp, #24]
+.endm
 
-	.macro vparm2 mem
-	adrl   x1, \mem
-	ldr    x1, [x1]
-	str    x1, [sp]
-	.endm
+maxLen = 256
 
-	.macro vparm3 mem
-	adrl   x2, \mem
-	ldr    x2, [x2]
-	str    x2, [sp, #8]
-	.endm
+.text
+.balign 4
 
-	.macro vparm4 mem
-	adrl   x3, \mem
-	ldr    x3, [x3]
-	str    x3, [sp, #16]
-	.endm
-
-	.macro vparm5 mem
-	adrl   x4, \mem
-	ldr    x4, [x4]
-	str    x4, [sp, #24]
-	.endm
-
-	maxLen = 256
-
-	.text
-	.balign 4
-
-	.global _getTitle
-	.global _asmMain
+.global _getTitle
+.global _asmMain
 
 _getTitle:
 	adrl x0, titleStr
