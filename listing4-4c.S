@@ -61,8 +61,9 @@ _getTitle:
 	ret
 
 _asmMain:
-	// function prologue
+	// function prologue (preserve also non-volatile registers x19 and x20)
 	str lr, [sp, #-16]!
+	stp x19, x20, [sp, #-16]!
 	sub sp, sp, #64
 
 	// buf = malloc(maxlen);
@@ -109,6 +110,7 @@ done:
 
 	// function epilogue
 	add sp, sp, #64
+	ldp x19, x20, [sp], #16
 	ldr lr, [sp], #16
 
 	ret
