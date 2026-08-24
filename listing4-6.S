@@ -3,6 +3,24 @@
 // ```
 // $ ./build listing4-6
 // $ ./listing4-6
+// Calling Listing 4-6:
+// sortme[0] = 1
+// sortme[1] = 2
+// sortme[2] = 3
+// sortme[3] = 4
+// sortme[4] = 5
+// sortme[5] = 6
+// sortme[6] = 7
+// sortme[7] = 8
+// sortme[8] = 9
+// sortme[9] = 10
+// sortme[10] = 11
+// sortme[11] = 12
+// sortme[12] = 13
+// sortme[13] = 14
+// sortme[14] = 15
+// sortme[15] = 16
+// Listing 4-6 terminated.
 // ```
 
 // enter - function prologue
@@ -62,7 +80,7 @@ false  = 0
 .global _getTitle
 .global _asmMain
 
-// sort(4byte *array, 8byte count)
+// void sort(4byte *array, 8byte count)
 //
 // Sorts the array of integers in ascending order using bubble sort.
 //
@@ -71,19 +89,17 @@ false  = 0
 //   count - Number of elements in the array.
 //
 // Local variables:
-//   w2 - didswap boolean flag
-//   x3 - index for the outer loop
-//   w4 - index for the inner loop
+//   x2 - didswap boolean flag
+//   x3 - i loop index
 //
 // Note:
-//   this is not an external C function and it doesn't call any external functions,
+//   This is not an external C function and it doesn't call any external functions,
 //   so it will dispense with some of the stuff mandated by the calling conventions.
 
 #define array x0
 #define count x1
-#define didswap w2
+#define didswap x2
 #define i x3
-#define j w4
 
 sort:
 	// count = (count - 1) * 4;
@@ -125,17 +141,23 @@ exit_inner:
 
 	ret
 
+// char *_getTitle(void)
+//
+// Returns the title string.
 _getTitle:
 	adrl x0, title
 	ret
 
+// void _asmMain(void)
+//
+// Sorts the array of integers in ascending order using bubble sort and prints the sorted array.
 _asmMain:
 	// preserve non-volatile registers x19 and x20
 	stp x19, x20, [sp, #-16]!
 
 	enter 64
 
-	// sort(sortme, sortsize);
+	// sort(&sortme, sortsize);
 	adrl x0, sortme
 	mov  x1, #sortsize
 	bl   sort
@@ -145,17 +167,20 @@ _asmMain:
 	mov  x20, xzr
 
 loop:
+	// value = array[index];
 	ldr  w0, [x19, x20, lsl #2]
 	adrl x1, value
 	str  w0, [x1]
 	adrl x1, index
 	str  x20, [x1]
 
+	// printf("sortme[%d] = %d\n", index, value);
 	adrl   x0, fmt
 	vparm2 index
 	vparm3 value
 	bl     _printf
 
+	// index++;
 	add x20, x20, #1
 	mov x9, #sortsize
 	cmp x20, x9
@@ -174,7 +199,7 @@ sortme:
 	.4byte 1, 2, 16, 14, 3, 9, 4, 10
 	.4byte 5, 7, 15, 12, 8, 6, 11, 13
 
-	// number of elements in sortme
+	// number of 4-byte elements in sortme
 	sortsize = (. - sortme) / 4
 
 value:
