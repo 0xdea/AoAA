@@ -1,9 +1,9 @@
-// listing4-6.S - A simple bubble sort example
+// listing4-6b.S - A simple bubble sort example (with include file)
 //
 // ```
-// $ ./build listing4-6
-// $ ./listing4-6
-// Calling Listing 4-6:
+// $ ./build listing4-6b
+// $ ./listing4-6b
+// Calling Listing 4-6b:
 // sortme[0] = 1
 // sortme[1] = 2
 // sortme[2] = 3
@@ -20,62 +20,16 @@
 // sortme[13] = 14
 // sortme[14] = 15
 // sortme[15] = 16
-// Listing 4-6 terminated.
+// Listing 4-6b terminated.
 // ```
 
-// enter - function prologue
-.macro enter locals.size
-stp    fp, lr, [sp, #-16]!
-mov    fp, sp
-.if    \locals.size > 0
-sub    sp, sp, #((\locals.size)+15) & 0xFFFFFFFFFFFFFFF0
-.endif
-.endm
+#include "include.S"
 
-// leave - function epilogue
-.macro leave
-mov    sp, fp
-ldp    fp, lr, [sp], #16
-.endm
-
-// adrl - load the address of a symbol into a register
-.macro adrl reg, mem
-adrp   \reg, \mem@PAGE
-add    \reg, \reg, \mem@PAGEOFF
-.endm
-
-// vparm - load variadic function parameters
-.macro vparm2 mem
-adrl   x1, \mem
-ldr    x1, [x1]
-str    x1, [sp]
-.endm
-
-.macro vparm3 mem
-adrl   x2, \mem
-ldr    x2, [x2]
-str    x2, [sp, #8]
-.endm
-
-.macro vparm4 mem
-adrl   x3, \mem
-ldr    x3, [x3]
-str    x3, [sp, #16]
-.endm
-
-.macro vparm5 mem
-adrl   x4, \mem
-ldr    x4, [x4]
-str    x4, [sp, #24]
-.endm
-
-// constants
 maxlen = 256
 true   = 1
 false  = 0
 
-.text
-.balign 4
+.code
 
 .global _getTitle
 .global _asmMain
@@ -212,4 +166,4 @@ fmt:
 	.asciz "sortme[%d] = %d\n"
 
 title:
-	.asciz "Listing 4-6"
+	.asciz "Listing 4-6b"
