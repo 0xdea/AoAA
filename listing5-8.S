@@ -40,19 +40,19 @@ _getTitle:
 // Calls anotherfunc() passing a local variable by reference.
 //
 // Local variables:
-// - addr: The address of the word to print at offset -4 from the frame pointer.
+// - value: a word at offset -4 from the frame pointer.
 
-#define addr #-4
+#define value -4
 
 somefunc:
 	enter 8
 
-	// addr = 42
+	// value = 42
 	mov w0, #42
-	str w0, [fp, addr]
+	str w0, [fp, #value]
 
-	// anotherfunc(&addr);
-	add x0, fp, addr
+	// anotherfunc(&value);
+	add x0, fp, #value
 	bl  anotherfunc
 
 	leave
@@ -64,10 +64,6 @@ somefunc:
 //
 // Arguments:
 // - x0: The address of the word to print.
-//
-// Local variables:
-// - addr: The address of the word to print at offset -4 from the frame pointer.
-
 anotherfunc:
 	enter 16
 
