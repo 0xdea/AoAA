@@ -2,6 +2,7 @@
 //
 // ```
 // $ ./build listing5-5
+// $ ./listing5-5
 // Calling Listing 5-5:
 // w0=23, w1=42
 // Listing 5-5 terminated.
@@ -54,7 +55,7 @@ local_vars:
 
 // void _asmMain(void);
 _asmMain:
-	enter 8
+	enter 0
 
 	mov w0, #23
 	mov w1, #42
