@@ -11,7 +11,7 @@
 stp    fp, lr, [sp, #-16]!
 mov    fp, sp
 .if    \locals.size > 0
-sub    sp, sp, #((\locals.size)+15) & 0xFFFFFFFFFFFFFFF0
+sub    sp, sp, #((\locals.size) + 15) & 0xFFFFFFFFFFFFFFF0
 .endif
 .endm
 
