@@ -1,10 +1,23 @@
-// listing5-7.S - Demonstrates obtaining the address of a variable to pass it by reference to a function
+// listing5-7.S - Demonstrates passing a static variable by reference to a function
+//
 // ```
 // $ ./build listing5-7
 // $ ./listing5-7
 // Calling Listing 5-7:
-// address=0x0x1044dc000, value=42
+// address=0x1044dc000, value=42
 // Listing 5-7 terminated.
+// $ otool -l listing5-7 | grep -A 5 "sectname __data"
+//   sectname __data
+//    segname __DATA
+//       addr 0x0000000100008000
+//       size 0x0000000000000026
+//     offset 32768
+//      align 2^0 (1)
+// $ lldb listing5-7
+// (lldb) image dump sections listing5-7
+// ...
+//   0x0000000000000006 data                   [0x0000000100008000-0x0000000100008026)  rw-  0x00008000 0x00000026 0x00000000 listing5-7.__DATA.__data
+// ...
 // ```
 
 #include "include.S"
@@ -58,7 +71,7 @@ staticvar:
 	.word 42
 
 fmt:
-	.asciz "address=0x%p, value=%d\n"
+	.asciz "address=%p, value=%d\n"
 
 title:
 	.asciz "Listing 5-7"

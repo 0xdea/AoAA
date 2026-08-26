@@ -31,8 +31,8 @@ _getTitle:
 // - w1: The second word to print.
 //
 // Local variables:
-// - a: The first word to print.
-// - b: The second word to print.
+// - a: The first word to print at offset -4 from the frame pointer.
+// - b: The second word to print at offset -8 from the frame pointer.
 
 #define a [fp, #-4]
 #define b [fp, #-8]
