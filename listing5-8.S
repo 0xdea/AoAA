@@ -67,7 +67,7 @@ somefunc:
 anotherfunc:
 	enter 16
 
-	// printf("address=0x%p, value=%d\n", x0, *x0);
+	// printf("address=%p, value=%d\n", x0, *x0);
 	ldr  x1, [x0]
 	str  x1, [sp, #8]
 	str  x0, [sp]
