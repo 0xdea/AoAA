@@ -66,7 +66,7 @@ byref:
 // Local variables:
 // - value: a word at offset -4 from the frame pointer.
 
-#define value -4
+value = -4
 
 _asmMain:
 	enter 8
