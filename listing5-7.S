@@ -42,7 +42,7 @@ _getTitle:
 // - x0: The address of the word to print.
 
 somefunc:
-	enter 16
+	enter 0x10
 
 	// printf("address=%p, value=%d\n", x0, *x0);
 	ldr  x1, [x0]

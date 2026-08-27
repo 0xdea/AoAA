@@ -25,7 +25,7 @@
 
 // enter - function prologue
 .macro enter locals.size
-stp    fp, lr, [sp, #-16]!
+stp    fp, lr, [sp, #-0x10]!
 mov    fp, sp
 .if    \locals.size > 0
 sub    sp, sp, #((\locals.size)+15) & 0xFFFFFFFFFFFFFFF0
@@ -35,7 +35,7 @@ sub    sp, sp, #((\locals.size)+15) & 0xFFFFFFFFFFFFFFF0
 // leave - function epilogue
 .macro leave
 mov    sp, fp
-ldp    fp, lr, [sp], #16
+ldp    fp, lr, [sp], #0x10
 .endm
 
 // adrl - load the address of a symbol into a register
@@ -54,23 +54,23 @@ str    x1, [sp]
 .macro vparm3 mem
 adrl   x2, \mem
 ldr    x2, [x2]
-str    x2, [sp, #8]
+str    x2, [sp, #0x08]
 .endm
 
 .macro vparm4 mem
 adrl   x3, \mem
 ldr    x3, [x3]
-str    x3, [sp, #16]
+str    x3, [sp, #0x10]
 .endm
 
 .macro vparm5 mem
 adrl   x4, \mem
 ldr    x4, [x4]
-str    x4, [sp, #24]
+str    x4, [sp, #0x18]
 .endm
 
 // constants
-maxlen = 256
+maxlen = 0x100
 true   = 1
 false  = 0
 
@@ -153,9 +153,9 @@ _getTitle:
 // Sorts the array of integers in ascending order using bubble sort and prints the sorted array.
 _asmMain:
 	// preserve non-volatile registers x19 and x20
-	stp x19, x20, [sp, #-16]!
+	stp x19, x20, [sp, #-0x10]!
 
-	enter 64
+	enter 0x40
 
 	// sort(&sortme, sortsize);
 	adrl x0, sortme
@@ -189,7 +189,7 @@ loop:
 	leave
 
 	// restore non-volatile registers x19 and x20
-	ldp x19, x20, [sp], #16
+	ldp x19, x20, [sp], #0x10
 
 	ret
 

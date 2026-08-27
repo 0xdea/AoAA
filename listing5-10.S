@@ -30,10 +30,11 @@ _getTitle:
 // Arguments:
 // - parm: The word value passed on the stack.
 
+// offset to parm from fp
 parm = 0x10
 
 onstack:
-	enter 0x8 + 0x4
+	enter 8 + 4
 
 	// printf("Value of parameter: %d\n", parm);
 	adrl x0, fmt
@@ -46,7 +47,7 @@ onstack:
 
 // void _asmMain(void);
 _asmMain:
-	enter 0x4
+	enter 4
 
 	// onstack(value1);
 	adrl x0, value1

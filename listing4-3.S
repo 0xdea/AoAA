@@ -21,19 +21,19 @@ str    x1, [sp]
 .macro vparm3 mem
 adrl   x2, \mem
 ldr    x2, [x2]
-str    x2, [sp, #8]
+str    x2, [sp, #0x08]
 .endm
 
 .macro vparm4 mem
 adrl   x3, \mem
 ldr    x3, [x3]
-str    x3, [sp, #16]
+str    x3, [sp, #0x10]
 .endm
 
 .macro vparm5 mem
 adrl   x4, \mem
 ldr    x4, [x4]
-str    x4, [sp, #24]
+str    x4, [sp, #0x18]
 .endm
 
 .text
@@ -48,8 +48,8 @@ _getTitle:
 
 _asmMain:
 	// function prologue
-	str lr, [sp, #-16]!
-	sub sp, sp, #256
+	str lr, [sp, #-0x10]!
+	sub sp, sp, #0x100
 
 	// demonstrate crash caused by uninitialized pointer dereference
 	adrl x0, ptrVar
@@ -57,8 +57,8 @@ _asmMain:
 	ldr  x2, [x1]   // pointer dereference (crash!)
 
 	// function epilogue
-	add sp, sp, #256
-	ldr lr, [sp], #16
+	add sp, sp, #0x100
+	ldr lr, [sp], #0x10
 
 	ret
 

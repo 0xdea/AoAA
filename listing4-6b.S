@@ -25,7 +25,7 @@
 
 #include "include.S"
 
-maxlen = 256
+maxlen = 0x100
 true   = 1
 false  = 0
 
@@ -107,9 +107,9 @@ _getTitle:
 // Sorts the array of integers in ascending order using bubble sort and prints the sorted array.
 _asmMain:
 	// preserve non-volatile registers x19 and x20
-	stp x19, x20, [sp, #-16]!
+	stp x19, x20, [sp, #-0x10]!
 
-	enter 64
+	enter 0x40
 
 	// sort(&sortme, sortsize);
 	adrl x0, sortme
@@ -143,7 +143,7 @@ loop:
 	leave
 
 	// restore non-volatile registers x19 and x20
-	ldp x19, x20, [sp], #16
+	ldp x19, x20, [sp], #0x10
 
 	ret
 

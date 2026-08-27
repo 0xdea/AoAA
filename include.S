@@ -8,7 +8,7 @@
 
 // function prologue
 .macro enter locals.size
-stp    fp, lr, [sp, #-16]!
+stp    fp, lr, [sp, #-0x10]!
 mov    fp, sp
 .if    \locals.size > 0
 sub    sp, sp, #((\locals.size) + 15) & 0xFFFFFFFFFFFFFFF0
@@ -18,7 +18,7 @@ sub    sp, sp, #((\locals.size) + 15) & 0xFFFFFFFFFFFFFFF0
 // function epilogue
 .macro leave
 mov    sp, fp
-ldp    fp, lr, [sp], #16
+ldp    fp, lr, [sp], #0x10
 .endm
 
 // loads the address of a symbol into a register
@@ -37,17 +37,23 @@ str    x1, [sp]
 .macro vparm3 mem
 adrl   x2, \mem
 ldr    x2, [x2]
-str    x2, [sp, #8]
+str    x2, [sp, #0x08]
 .endm
 
 .macro vparm4 mem
 adrl   x3, \mem
 ldr    x3, [x3]
-str    x3, [sp, #16]
+str    x3, [sp, #0x10]
 .endm
 
 .macro vparm5 mem
 adrl   x4, \mem
 ldr    x4, [x4]
-str    x4, [sp, #24]
+str    x4, [sp, #0x18]
+.endm
+
+.macro vparm6 mem
+adrl   x5, \mem
+ldr    x5, [x5]
+str    x5, [sp, #0x20]
 .endm

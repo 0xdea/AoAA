@@ -29,22 +29,22 @@ str    x1, [sp]
 .macro vparm3 mem
 adrl   x2, \mem
 ldr    x2, [x2]
-str    x2, [sp, #8]
+str    x2, [sp, #0x08]
 .endm
 
 .macro vparm4 mem
 adrl   x3, \mem
 ldr    x3, [x3]
-str    x3, [sp, #16]
+str    x3, [sp, #0x10]
 .endm
 
 .macro vparm5 mem
 adrl   x4, \mem
 ldr    x4, [x4]
-str    x4, [sp, #24]
+str    x4, [sp, #0x18]
 .endm
 
-maxlen = 256
+maxlen = 0x100
 
 .text
 .balign 4
@@ -58,8 +58,8 @@ _getTitle:
 
 _asmMain:
 	// function prologue
-	str lr, [sp, #-16]!
-	sub sp, sp, #64
+	str lr, [sp, #-0x10]!
+	sub sp, sp, #0x40
 
 	// strncpy(result_str, str1, maxlen - 1);
 	adrl x0, result_str
@@ -154,8 +154,8 @@ _asmMain:
 	bl     _printf
 
 	// function epilogue
-	add sp, sp, #64
-	ldr lr, [sp], #16
+	add sp, sp, #0x40
+	ldr lr, [sp], #0x10
 
 	ret
 

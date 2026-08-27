@@ -27,8 +27,8 @@
 
 #include "include.S"
 
-// array length
-len = 256
+// array length (256 words)
+len = 0x100
 
 .code
 
@@ -79,11 +79,11 @@ zerobytes:
 
 printarray:
 	// preserve non-volatile registers used for local variables
-	stp x19, x20, [sp, #-16]!
-	stp x21, x22, [sp, #-16]!
+	stp x19, x20, [sp, #-0x10]!
+	stp x21, x22, [sp, #-0x10]!
 
 	// allocate stack space for variadic arguments
-	enter 64
+	enter 0x40
 
 	// initialize local variables in registers
 	mov arr, x0
@@ -109,14 +109,14 @@ printarray:
 	leave
 
 	// restore non-volatile registers used for local variables
-	ldp x21, x22, [sp], #16
-	ldp x19, x20, [sp], #16
+	ldp x21, x22, [sp], #0x10
+	ldp x19, x20, [sp], #0x10
 
 	ret
 
 // void _asmMain(void);
 _asmMain:
-	enter 64
+	enter 0x40
 
 	// print the initial array contents
 	// printarray(&array, len);

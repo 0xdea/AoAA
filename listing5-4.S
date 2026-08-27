@@ -46,9 +46,9 @@ _getTitle:
 // Prints 40 spaces to the console.
 print40spaces:
 	// preserve non-volatile registers
-	stp x19, x20, [sp, #-16]!
+	stp x19, x20, [sp, #-0x10]!
 
-	enter 64
+	enter 0x40
 
 	mov w19, #40
 
@@ -61,16 +61,16 @@ print40spaces:
 	leave
 
 	// restore non-volatile registers
-	ldp x19, x20, [sp], #16
+	ldp x19, x20, [sp], #0x10
 
 	ret
 
 // void _asmMain(void);
 _asmMain:
 	// preserve non-volatile registers
-	stp x19, x20, [sp, #-16]!
+	stp x19, x20, [sp, #-0x10]!
 
-	enter 64
+	enter 0x40
 
 	mov w19, #20
 
@@ -87,7 +87,7 @@ _asmMain:
 	leave
 
 	// restore non-volatile registers
-	ldp x19, x20, [sp], #16
+	ldp x19, x20, [sp], #0x10
 
 	ret
 

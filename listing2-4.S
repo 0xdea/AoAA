@@ -26,19 +26,19 @@ str    x1, [sp]
 .macro vparm3 mem
 adrl   x2, \mem
 ldr    x2, [x2]
-str    x2, [sp, #8]
+str    x2, [sp, #0x08]
 .endm
 
 .macro vparm4 mem
 adrl   x3, \mem
 ldr    x3, [x3]
-str    x3, [sp, #16]
+str    x3, [sp, #0x10]
 .endm
 
 .macro vparm5 mem
 adrl   x4, \mem
 ldr    x4, [x4]
-str    x4, [sp, #24]
+str    x4, [sp, #0x20]
 .endm
 
 .equ maxLen, 256
@@ -57,7 +57,7 @@ _getTitle:
 // prints the prompt, reads an input string from the user, then
 // converts it to an integer and returns the integer value in X0
 readNum:
-	sub  sp, sp, #64       // not really needed here
+	sub  sp, sp, #0x40     // not really needed here
 	adrl x1, saveLRreadNum
 	str  lr, [x1]
 
@@ -82,7 +82,7 @@ readNum:
 badInput:
 	adrl x1, saveLRreadNum
 	ldr  lr, [x1]
-	add  sp, sp, #64       // not really needed here
+	add  sp, sp, #0x40     // not really needed here
 
 	ret
 
@@ -90,7 +90,7 @@ badInput:
 
 _asmMain:
 	// make room on the stack
-	sub sp, sp, #64
+	sub sp, sp, #0x40
 
 	// save LR
 	adrl x0, saveLRasmMain
@@ -212,7 +212,7 @@ allDone:
 	ldr  lr, [x0]
 
 	// restore stack pointer
-	add sp, sp, #64
+	add sp, sp, #0x40
 
 	ret
 

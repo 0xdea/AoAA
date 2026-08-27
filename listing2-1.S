@@ -27,7 +27,7 @@ str    x1, [sp]
 .macro vparm3 mem
 adrl   x2, \mem
 ldr    x2, [x2]
-str    x2, [sp, #8]
+str    x2, [sp, #0x8]
 .endm
 
 .text
@@ -43,7 +43,7 @@ _getTitle:
 
 _asmMain:
 	// make room on the stack
-	sub sp, sp, #64
+	sub sp, sp, #0x40
 
 	// save LR
 	adrl x0, saveLR
@@ -72,7 +72,7 @@ _asmMain:
 	ldr  lr, [x0]
 
 	// restore stack pointer
-	add sp, sp, #64
+	add sp, sp, #0x40
 
 	ret
 

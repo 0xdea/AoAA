@@ -25,7 +25,7 @@ _getTitle:
 noRet:
 
 followingProc:
-	enter 64
+	enter 0x40
 
 	adrl x0, msg
 	bl   _printf
@@ -35,7 +35,7 @@ followingProc:
 
 // void _asmMain(void);
 _asmMain:
-	enter 64
+	enter 0x40
 
 	bl noRet
 
