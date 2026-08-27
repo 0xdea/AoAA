@@ -3,6 +3,10 @@
 // ```
 // $ ./build listing5-8b
 // $ ./listing5-8b
+// Calling Listing 5-8b:
+// value=42
+// address=0x16b43709c, value=42
+// Listing 5-8b terminated.
 // ```
 
 #include "include.S"
