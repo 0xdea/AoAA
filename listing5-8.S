@@ -1,4 +1,4 @@
-// listing5-8.S - Demonstrates passing a local variable by reference to a function
+// listing5-8.S - Demonstrates passing a local variable by reference as a parameter to a function
 //
 // ```
 // $ ./build listing5-8

@@ -1,4 +1,4 @@
-// listing5-7.S - Demonstrates passing a static variable by reference to a function
+// listing5-7.S - Demonstrates passing a static variable by reference as a parameter to a function
 //
 // ```
 // $ ./build listing5-7
