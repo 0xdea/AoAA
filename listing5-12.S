@@ -33,8 +33,13 @@
 
 #include "include.S"
 
+// point struct size
 pt_size = 2
+
+// number of points in the array
 pt_count = 24
+
+// offsets of elements in the struct
 x = 0
 y = 1
 
@@ -52,10 +57,10 @@ _getTitle:
 
 // init_points_array(points_array *ptr);
 //
-// Initializes the points_array at the given address.
+// Initializes the points_array (array of points) at the given address.
 //
 // Arguments:
-// - points_array_ptr: The address of the points_array to initialize.
+// - ptr: The address of the points_array to initialize.
 
 // offset to ptr from fp
 ptr = 0x10
@@ -66,19 +71,19 @@ ptr = 0x10
 init_points_array:
 	enter 0
 
-	// array = points_array
+	// array = ptr
 	ldr array, [fp, #ptr]
 
-	// index = 0
+	// loop over points_array and initialize each element
+	// for (index = 0; index < pt_count; index++) ...
 	mov index, xzr
 
-	// while (index < pt_count) ...
 foreach_element:
 	cmp index, #pt_count
 	bhs end_foreach
 
 	// compute the address of points_array[index] in x3
-	// x3 = array (x1) + index (x19) * pt_size (2)
+	// x3 = array + index * pt_size
 	add x3, array, index, lsl #1
 
 	// x1[index].x = index / 8
@@ -111,13 +116,14 @@ _asmMain:
 	bl   init_points_array
 
 	// loop over points_array and print each element
+	// for (x19 = 0; x19 < pt_count; x19++) ...
 	mov x19, xzr
 
 loop:
 	cmp x19, #pt_count
 	bhs end_loop
 
-	// print the x field
+	// printf("points_array[%d].x = %d\t", index, x1[index].x);
 	adrl x0, fmtx
 	mov  x1, x19
 	str  x1, [sp]
@@ -127,7 +133,7 @@ loop:
 	str  w2, [sp, #0x8]
 	bl   _printf
 
-	// print the y field
+	// printf("points_array[%d].y = %d\n", index, x1[index].y);
 	adrl x0, fmty
 	mov  x1, x19
 	str  x1, [sp]
