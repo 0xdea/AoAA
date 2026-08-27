@@ -90,8 +90,7 @@ _asmMain:
 	bl     print
 	.asciz "Hello, world\n"
 
-	// for some reason, we need to specify again the alignment here
-	// otherwise the assembler won't align the next instructions properly
+	// specify again the alignment here, otherwise the assembler won't align the next instructions properly
 	.balign 4
 
 	leave
