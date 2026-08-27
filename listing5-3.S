@@ -1,4 +1,4 @@
-// listing5-3.S - Demonstrates preserving registers across procedure calls (bugged version)
+// listing5-3.S - Demonstrates preserving registers across procedure calls (broken version)
 //
 // ```
 // $ ./build listing5-3
