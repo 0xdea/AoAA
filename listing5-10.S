@@ -1,4 +1,4 @@
-// listing5-10.S - Demonstrates passing parameters on the stack
+// listing5-10.S - Demonstrates passing parameters by value on the stack
 //
 // ```
 // $ ./build listing5-10
@@ -23,9 +23,9 @@ _getTitle:
 	adrl x0, title
 	ret
 
-// onstack
+// onstackbyval
 //
-// Passed a single word parameter by value on the stack.
+// Expects a single word parameter passed by value on the stack.
 //
 // Arguments:
 // - parm: The word value passed on the stack.
@@ -33,8 +33,8 @@ _getTitle:
 // offset to parm from fp
 parm = 0x10
 
-onstack:
-	enter 8 + 4
+onstackbyval:
+	enter 0x40
 
 	// printf("Value of parameter: %d\n", parm);
 	adrl x0, fmt
@@ -47,19 +47,19 @@ onstack:
 
 // void _asmMain(void);
 _asmMain:
-	enter 4
+	enter 0x40
 
-	// onstack(value1);
+	// onstackbyval(value1);
 	adrl x0, value1
 	ldr  w1, [x0]
 	str  w1, [sp]
-	bl   onstack
+	bl   onstackbyval
 
-	// onstack(value2);
+	// onstackbyval(value2);
 	adrl x0, value2
 	ldr  w1, [x0]
 	str  w1, [sp]
-	bl   onstack
+	bl   onstackbyval
 
 	leave
 	ret
