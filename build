@@ -59,7 +59,7 @@ case "$filename" in
 esac
 
 # Delete any stale executable/object file.
-rm -f -- "$filename" "$filename".o
+rm -f -- "$filename".out "$filename".o
 
 # If the -c option was provided, only assemble the .S file and produce a .o output file.
 # Otherwise, compile and link both the .cpp and the .S file and produce an executable.
