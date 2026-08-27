@@ -1,5 +1,6 @@
 a.out
 *.o
+*.out
 *.i64
 *.idb
 *.id0

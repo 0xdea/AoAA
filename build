@@ -66,5 +66,5 @@ rm -f -- "$filename" "$filename".o
 if $compileonly; then
 	$compiler -c -o "$filename".o "$filename".S
 else
-	$compiler -o "$filename" "$cppfile" "$filename".S
+	$compiler -o "$filename".out "$cppfile" "$filename".S
 fi
