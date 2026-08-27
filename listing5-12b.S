@@ -1,9 +1,9 @@
-// listing5-12.S - Demonstrates passing a large object by reference on the stack (array in .data)
+// listing5-12b.S - Demonstrates passing a large object by reference on the stack (array on the stack)
 //
 // ```
-// $ ./build listing5-12
-// $ ./listing5-12
-// Calling Listing 5-12:
+// $ ./build listing5-12b
+// $ ./listing5-12b
+// Calling Listing 5-12b:
 // points_array[0].x = 0	points_array[0].y = 0
 // points_array[1].x = 0	points_array[1].y = 1
 // points_array[2].x = 0	points_array[2].y = 2
@@ -28,7 +28,7 @@
 // points_array[21].x = 2	points_array[21].y = 5
 // points_array[22].x = 2	points_array[22].y = 6
 // points_array[23].x = 2	points_array[23].y = 7
-// Listing 5-12 terminated.
+// Listing 5-12b terminated.
 // ```
 
 #include "include.S"
@@ -103,17 +103,21 @@ end_foreach:
 	ret
 
 // void _asmMain(void);
+
+// offset to points_array from fp
+points_array = -(pt_count * pt_size)
+
 _asmMain:
 
 	// preserve non-volatile registers
 	stp x19, x20, [sp, #-0x10]!
 
-	enter 0x40
+	enter (pt_count * pt_size) + 0x40
 
 	// init_points_array(&points_array);
-	adrl x0, points_array
-	str  x0, [sp]
-	bl   init_points_array
+	add x0, fp, #points_array
+	str x0, [sp]
+	bl  init_points_array
 
 	// loop over points_array and print each element
 	// for (x19 = 0; x19 < pt_count; x19++) ...
@@ -127,7 +131,7 @@ loop:
 	adrl x0, fmtx
 	mov  x1, x19
 	str  x1, [sp]
-	adrl x3, points_array
+	add  x3, fp, #points_array
 	add  x3, x3, x19, lsl #1
 	ldrb w2, [x3, #x]
 	str  w2, [sp, #0x8]
@@ -137,7 +141,7 @@ loop:
 	adrl x0, fmty
 	mov  x1, x19
 	str  x1, [sp]
-	adrl x3, points_array
+	add  x3, fp, #points_array
 	add  x3, x3, x19, lsl #1
 	ldrb w2, [x3, #y]
 	str  w2, [sp, #0x8]
@@ -157,9 +161,6 @@ end_loop:
 
 .data
 
-points_array:
-	.space pt_count * pt_size
-
 fmtx:
 	.asciz "points_array[%d].x = %d\t"
 
@@ -167,4 +168,4 @@ fmty:
 	.asciz "points_array[%d].y = %d\n"
 
 title:
-	.asciz "Listing 5-12"
+	.asciz "Listing 5-12b"
