@@ -57,7 +57,7 @@ print:
 	sub x2, x2, #1
 
 	// make sure the address in x1 is 4-byte aligned
-	// x1 = (x1 + 3) & 0xffff_ffff_ffff_fff0
+	// x1 = (x1 + 3) & 0xffff_ffff_ffff_fffc
 	add x1, x1, #3
 	and x1, x1, #-4
 
