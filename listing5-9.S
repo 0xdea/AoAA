@@ -3,6 +3,9 @@
 // ```
 // $ ./build listing5-9
 // $ ./listing5-9
+// Calling Listing 5-9:
+// Hello, world
+// Listing 5-9 terminated.
 // ```
 
 #include "include.S"
@@ -49,8 +52,9 @@ print:
 	cmp  w2, #0
 	bne  0b
 
-	// x2 = strlen(lr)
+	// x2 = strlen(lr), excluding the NUL terminator
 	sub x2, x1, lr
+	sub x2, x2, #1
 
 	// make sure the address in x1 is 4-byte aligned
 	// x1 = (x1 + 3) & 0xffff_ffff_ffff_fff0
@@ -85,6 +89,10 @@ _asmMain:
 
 	bl     print
 	.asciz "Hello, world\n"
+
+	// for some reason, we need to specify again the alignment here
+	// otherwise the assembler won't align the next instructions properly
+	.balign 4
 
 	leave
 	ret
