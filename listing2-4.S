@@ -41,7 +41,7 @@ ldr    x4, [x4]
 str    x4, [sp, #0x20]
 .endm
 
-.equ maxLen, 256
+.equ maxLen, 0x100
 
 .text
 .balign 4

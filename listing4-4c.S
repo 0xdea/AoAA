@@ -48,7 +48,7 @@ ldr    x4, [x4]
 str    x4, [sp, #0x18]
 .endm
 
-maxlen = 256
+maxlen = 0x100
 
 .text
 .balign 4

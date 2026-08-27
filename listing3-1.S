@@ -62,28 +62,28 @@ _asmMain:
 
 	// demonstrate the use of address expressions
 	adrl   x0, fmtStr1
-	ldr    w1, i + 0
+	ldr    w1, i + 0x0
 	adrl   x2, outputVal
 	str    w1, [x2]
 	vparm2 outputVal
 	bl     _printf
 
 	adrl   x0, fmtStr2
-	ldr    w1, i + 4
+	ldr    w1, i + 0x4
 	adrl   x2, outputVal
 	str    w1, [x2]
 	vparm2 outputVal
 	bl     _printf
 
 	adrl   x0, fmtStr3
-	ldr    w1, i + 8
+	ldr    w1, i + 0x8
 	adrl   x2, outputVal
 	str    w1, [x2]
 	vparm2 outputVal
 	bl     _printf
 
 	adrl   x0, fmtStr4
-	ldr    w1, i + 12
+	ldr    w1, i + 0xc
 	adrl   x2, outputVal
 	str    w1, [x2]
 	vparm2 outputVal

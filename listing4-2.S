@@ -42,7 +42,7 @@ str    x1, [sp]
 .macro vparm3 mem
 adrl   x2, \mem
 ldr    x2, [x2]
-str    x2, [sp, #0x8]
+str    x2, [sp, #0x08]
 .endm
 
 .macro vparm4 mem
