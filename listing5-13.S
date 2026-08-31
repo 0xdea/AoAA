@@ -3,6 +3,32 @@
 // ```
 // $ ./build listing5-13
 // $ ./listing5-13
+// Calling Listing 5-13:
+// Data before sorting:
+// 	1
+// 	10
+// 	2
+// 	9
+// 	3
+// 	8
+// 	4
+// 	7
+// 	5
+// 	6
+//
+// Data after sorting:
+// 	1
+// 	2
+// 	3
+// 	4
+// 	5
+// 	6
+// 	7
+// 	8
+// 	9
+// 	10
+//
+// Listing 5-13 terminated.
 // ```
 
 #include "include.S"
@@ -39,25 +65,24 @@ _getTitle:
 #define pivot w24
 
 quicksort:
-	// preserve registers
 	stp x19, x20, [sp, #-0x10]!
 	stp x21, x22, [sp, #-0x10]!
 	stp x23, x24, [sp, #-0x10]!
 
 	enter 0x20
 
-	// if (low >= high) return;
+	// if (low < high) ...
 	cmp low, high
 	bge end_if3
+
+	// pivot = arr[((low + high) / 2) * 4] = arr[(low + high) * 2]
+	add x0, low, high
+	lsr x0, x0, #1
+	ldr pivot, [arr, x0, lsl #2]
 
 	// i = low; j = high;
 	mov i, low
 	mov j, high
-
-	// pivot = arr[((i + j) / 2) * 4] = arr[(i + j) * 2]
-	add x0, i, j
-	lsr x0, x0, #1
-	ldr pivot, [arr, x0, lsl #2]
 
 	// do ...
 do:
@@ -66,10 +91,9 @@ do:
 
 	// scan from the left
 while1:
-	// i++;
+	// while (arr[i] <= pivot) i++;
 	add i, i, #1
 
-	// while (pivot <= arr[i])
 	ldr w1, [arr, i, lsl #2]
 	cmp pivot, w1
 	bgt while1
@@ -79,15 +103,14 @@ while1:
 
 	// scan from the right
 while2:
-	// j--;
+	// while (arr[j] >= pivot) j--;
 	sub j, j, #1
 
-	// while (pivot >= arr[j])
 	ldr w1, [arr, j, lsl #2]
 	cmp pivot, w1
 	blt while2
 
-	// if (i <= j) swap(arr[i], arr[j]);
+	// if (i <= j) { swap(arr[i], arr[j]); i++; j--; }
 	cmp i, j
 	bgt end_if1
 
@@ -96,7 +119,6 @@ while2:
 	str w0, [arr, j, lsl #2]
 	str w1, [arr, i, lsl #2]
 
-	// i++; j--;
 	add i, i, #1
 	sub j, j, #1
 
@@ -116,7 +138,7 @@ end_if1:
 	ldp low, high, [sp], #0x10
 
 end_if2:
-	// if (i < high) quicksort(arr, i + 1, high);
+	// if (i < high) quicksort(arr, i, high);
 	cmp i, high
 	bge end_if3
 
@@ -128,7 +150,6 @@ end_if2:
 end_if3:
 	leave
 
-	// restore registers
 	ldp x23, x24, [sp], #0x10
 	ldp x21, x22, [sp], #0x10
 	ldp x19, x20, [sp], #0x10
@@ -153,42 +174,42 @@ end_if3:
 #define index x20
 
 printarray:
-
-	// preserve registers
 	stp x19, x20, [sp, #-0x10]!
 
 	enter 0x20
 
+	// ptr = array; index = 0;
 	adrl ptr, array
 	mov  index, xzr
 
+	// while (index < count) {
 loop:
 	cmp index, #count
 	bge end_loop
 
+	// printf("%d ", arr[index]);
 	adrl x0, fmt2
 	ldr  w1, [ptr, index, lsl #2]
 	str  w1, [sp]
 	bl   _printf
 
+	// index++
 	add index, index, #1
 	b   loop
 
 end_loop:
+	// printf("\n");
 	adrl x0, fmt3
 	bl   _printf
 
 	leave
 
-	// restore registers
 	ldp x19, x20, [sp], #0x10
 
 	ret
 
 // void _asmMain(void);
 _asmMain:
-
-	// preserve registers
 	stp x19, x20, [sp, #-0x10]!
 	stp x21, x22, [sp, #-0x10]!
 
@@ -214,7 +235,8 @@ _asmMain:
 	// printarray();
 	bl printarray
 
-	// restore registers
+	leave
+
 	ldp x21, x22, [sp], #0x10
 	ldp x19, x20, [sp], #0x10
 
