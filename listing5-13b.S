@@ -1,4 +1,4 @@
-// listing5-13b.S - Recursive quicksort implementation (macOS ABI compliant)
+// listing5-13b.S - Recursive quicksort implementation (adheres to the macOS ABI)
 //
 // ```
 // $ ./build listing5-13b
