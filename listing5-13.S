@@ -7,6 +7,9 @@
 
 #include "include.S"
 
+// number of elements in the array
+count = 10
+
 .code
 
 .global _getTitle
@@ -33,7 +36,7 @@ _getTitle:
 #define high x21
 #define i x22
 #define j x23
-#define pivot x24
+#define pivot w24
 
 quicksort:
 	// preserve registers
@@ -43,19 +46,20 @@ quicksort:
 
 	enter 0x20
 
+	// if (low >= high) return;
 	cmp low, high
-	bhs end_if3
+	bge end_if3
 
-	// i = low; j = high
+	// i = low; j = high;
 	mov i, low
 	mov j, high
 
-	// pivot = ((i + j) / 2) * 4 = ((i + j) * 2)
+	// pivot = arr[((i + j) / 2) * 4] = arr[(i + j) * 2]
 	add x0, i, j
 	lsr x0, x0, #1
 	ldr pivot, [arr, x0, lsl #2]
 
-	// do ... while (i <= j);
+	// do ...
 do:
 	// counteract i++ below
 	sub i, i, #1
@@ -85,7 +89,7 @@ while2:
 
 	// if (i <= j) swap(arr[i], arr[j]);
 	cmp i, j
-	bge end_if1
+	bgt end_if1
 
 	ldr w0, [arr, i, lsl #2]
 	ldr w1, [arr, j, lsl #2]
@@ -97,6 +101,7 @@ while2:
 	sub j, j, #1
 
 end_if1:
+	// ... while (i <= j)
 	cmp i, j
 	ble do
 
@@ -105,11 +110,20 @@ end_if1:
 	cmp low, j
 	bge end_if2
 
-	// if (j < high) quicksort(arr, j + 1, high);
-	cmp j, high
-	blt do
+	stp low, high, [sp, #-0x10]!
+	mov high, j
+	bl  quicksort
+	ldp low, high, [sp], #0x10
 
 end_if2:
+	// if (i < high) quicksort(arr, i + 1, high);
+	cmp i, high
+	bge end_if3
+
+	stp low, high, [sp, #-0x10]!
+	mov low, i
+	bl  quicksort
+	ldp low, high, [sp], #0x10
 
 end_if3:
 	leave
@@ -121,55 +135,87 @@ end_if3:
 
 	ret
 
-// void _asmMain(void);
-_asmMain:
+// printarray
+//
+// Prints the array elements.
+//
+// Global variables:
+// - array: the array to be printed.
+//
+// Compile-time constants:
+// - count: number of elements in the array.
+//
+// Local variables:
+// - ptr: pointer to the array.
+// - index: index of the current element.
 
-	// preserve non-volatile registers
+#define ptr x19
+#define index x20
+
+printarray:
+
+	// preserve registers
 	stp x19, x20, [sp, #-0x10]!
 
-	enter (pt_count * pt_size) + 0x40
+	enter 0x20
 
-	// init_points_array(&points_array);
-	add x0, fp, #points_array
-	str x0, [sp]
-	bl  init_points_array
-
-	// loop over points_array and print each element
-	// for (x19 = 0; x19 < pt_count; x19++) ...
-	mov x19, xzr
+	adrl ptr, array
+	mov  index, xzr
 
 loop:
-	cmp x19, #pt_count
-	bhs end_loop
+	cmp index, #count
+	bge end_loop
 
-	// printf("points_array[%d].x = %d\t", index, x1[index].x);
-	adrl x0, fmtx
-	mov  x1, x19
-	str  x1, [sp]
-	add  x3, fp, #points_array
-	add  x3, x3, x19, lsl #1
-	ldrb w2, [x3, #x]
-	str  w2, [sp, #0x8]
+	adrl x0, fmt2
+	ldr  w1, [ptr, index, lsl #2]
+	str  w1, [sp]
 	bl   _printf
 
-	// printf("points_array[%d].y = %d\n", index, x1[index].y);
-	adrl x0, fmty
-	mov  x1, x19
-	str  x1, [sp]
-	add  x3, fp, #points_array
-	add  x3, x3, x19, lsl #1
-	ldrb w2, [x3, #y]
-	str  w2, [sp, #0x8]
-	bl   _printf
-
-	// increment index and repeat
-	add x19, x19, #1
+	add index, index, #1
 	b   loop
 
 end_loop:
+	adrl x0, fmt3
+	bl   _printf
+
 	leave
 
-	// restore non-volatile registers
+	// restore registers
+	ldp x19, x20, [sp], #0x10
+
+	ret
+
+// void _asmMain(void);
+_asmMain:
+
+	// preserve registers
+	stp x19, x20, [sp, #-0x10]!
+	stp x21, x22, [sp, #-0x10]!
+
+	enter 0x40
+
+	// printf("Data before sorting:\n");
+	adrl x0, fmt1
+	bl   _printf
+
+	// printarray();
+	bl printarray
+
+	// quicksort(array, 0, count - 1);
+	adrl arr, array
+	mov  low, xzr
+	mov  high, #count - 1
+	bl   quicksort
+
+	// printf("Data after sorting:\n");
+	adrl x0, fmt4
+	bl   _printf
+
+	// printarray();
+	bl printarray
+
+	// restore registers
+	ldp x21, x22, [sp], #0x10
 	ldp x19, x20, [sp], #0x10
 
 	ret
