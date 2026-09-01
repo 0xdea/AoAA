@@ -32,14 +32,30 @@ _getTitle:
 // for use in comparisons. If the difference between two values (one of which is in D0)
 // is less than this error range, the values can be considered equal.
 compute_err:
-	stp x0, x1, [sp, #-0x10]!
-
+	stp   x0, x1, [sp, #-0x10]!
 	enter 0x40
 
+	// extract the exponent
+	fmov x0, d0
+	and  x0, x0, #exp_mask
+	lsr  x1, x0, #exp_pos
+
+	cmp x1, #(exp_pos - bits - 1)
+	blo denormal
+
+	sub x1, x1, #(exp_pos - bits)
+	lsl x0, x1, #exp_pos
+	b   done
+
+denormal:
+	mov x0, #bit_mask
+	lsl x0, x0, x1
+
+done:
+	fmov d0, x0
+
 	leave
-
 	ldp x0, x1, [sp], #0x10
-
 	ret
 
 _asmMain:
