@@ -81,6 +81,7 @@ _asmMain:
 .data
 
 globals:
+
 g1:
 	.word 0
 
