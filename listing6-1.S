@@ -32,14 +32,12 @@ title:
 fmt:
 	.asciz "g1: %d, g2: %d, g3: %d, g4: %s, g5: %d\n"
 
-	// char *_getTitle(void);
-	//
-	// Returns the title string.
+.balign 4
+
 _getTitle:
 	adrl x0, title
 	ret
 
-// void _asmMain(void);
 _asmMain:
 	// preserve x28 (and x27) on the stack
 	stp x28, x27, [sp, #-0x10]!
