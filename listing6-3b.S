@@ -1,9 +1,9 @@
-// listing6-3.S - Demonstrates calling various C stdlib math functions
+// listing6-3b.S - Demonstrates calling various C stdlib math functions (using only registers)
 //
 // ```
-// $ ./build listing6-3
-// $ ./listing6-3
-// Calling Listing 6-3:
+// $ ./build listing6-3b
+// $ ./listing6-3b
+// Calling Listing 6-3b:
 // sin(pi) = 8.14137986335080e-13
 // sin(pi/2) = 1.00000000000000e+00
 // sin(pi/4) = 7.07106781594585e-01
@@ -19,7 +19,7 @@
 // tan(pi/4) = 1.00000000115410e+00
 // tan(pi/8) = 4.14213562373090e-01
 //
-// Listing 6-3 terminated.
+// Listing 6-3b terminated.
 // ```
 
 #include "include.S"
@@ -54,52 +54,46 @@ _getTitle:
 // - func_addr: pointer to the function to call
 // - func_name: name of the function to call
 
-func_addr = 0x10
-func_name = 0x18
+#define func_addr x19
+#define func_name x20
 
 do_pi:
 	stp   x19, x20, [sp, #-0x10]!
 	enter 0x40
 
-	// preserve both func_addr and func_name arguments on the stack
-	stp x0, x1, [fp, #func_addr]
-
-	// save func_addr in non-volatile register x19
+	// func_addr = x0; func_name = x1;
 	mov x19, x0
+	mov x20, x1
 
 	// *func_addr(pi)
 	ldr  d0, pi
-	blr  x19
+	blr  func_addr
 	str  d0, [sp, #8]
-	ldr  x1, [fp, #func_name]
-	str  x1, [sp]
+	str  func_name, [sp]
 	adrl x0, pi1_fmt
 	bl   _printf
 
 	// *func_addr(pi/2)
 	ldr  d0, pi2
-	blr  x19
+	blr  func_addr
 	str  d0, [sp, #8]
-	ldr  x1, [fp, #func_name]
-	str  x1, [sp]
+	str  func_name, [sp]
 	adrl x0, pi2_fmt
 	bl   _printf
 
 	// *func_addr(pi/4)
 	ldr  d0, pi4
-	blr  x19
+	blr  func_addr
 	str  d0, [sp, #8]
-	ldr  x1, [fp, #func_name]
-	str  x1, [sp]
+	str  func_name, [sp]
 	adrl x0, pi4_fmt
 	bl   _printf
 
 	// *func_addr(pi/8)
 	ldr  d0, pi8
-	blr  x19
+	blr  func_addr
 	str  d0, [sp, #8]
-	ldr  x1, [fp, #func_name]
-	str  x1, [sp]
+	str  func_name, [sp]
 	adrl x0, pi8_fmt
 	bl   _printf
 
@@ -165,4 +159,4 @@ tan_str:
 	.asciz "tan"
 
 title:
-	.asciz "Listing 6-3"
+	.asciz "Listing 6-3b"
