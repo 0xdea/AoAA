@@ -156,9 +156,6 @@ value2:
 	// When value2 is somewhere between 8e-323 and 9e-323, the comparison becomes not equal
 	.double 9e-323 // for equality, try also: 1.234567890123456
 
-title:
-	.asciz "Listing 6-2"
-
 err_fmt:
 	.asciz "Error for %23.16e = %e\n"
 
@@ -173,3 +170,6 @@ eq_fmt:
 
 ne_fmt:
 	.asciz "Value1 != Value2\n"
+
+title:
+	.asciz "Listing 6-2"
