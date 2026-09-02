@@ -34,10 +34,14 @@ fmt:
 
 .balign 4
 
+// char *_getTitle(void);
+//
+// Returns the title string.
 _getTitle:
 	adrl x0, title
 	ret
 
+// void _asmMain(void);
 _asmMain:
 	// preserve x28 (and x27) on the stack
 	stp x28, x27, [sp, #-0x10]!
