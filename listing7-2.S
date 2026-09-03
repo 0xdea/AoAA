@@ -1,8 +1,23 @@
-// listing7-2.S - Demonstrates indirect jumps to control flow in a program
+// listing7-2.S - Demonstrates indirect jumps via the br instruction to control the flow in a program
 //
 // ```
 // $ ./build listing7-2
 // $ ./listing7-2
+// Calling Listing 7-2:
+// Enter an integer value between 1 and 10 (0 to quit): a123
+// The input string is not a proper number
+// Enter an integer value between 1 and 10 (0 to quit): 123a
+// The input string is not a proper number
+// Enter an integer value between 1 and 10 (0 to quit): 1234567890123
+// The input value is outside the range 1-10
+// Enter an integer value between 1 and 10 (0 to quit): -1
+// The input value is outside the range 1-10
+// Enter an integer value between 1 and 10 (0 to quit): 11
+// The input value is outside the range 1-10
+// Enter an integer value between 1 and 10 (0 to quit): 5
+// The input value is 5
+// Enter an integer value between 1 and 10 (0 to quit): 0
+// Listing 7-2 terminated.
 // ```
 
 #include "include.S"
@@ -10,8 +25,7 @@
 // maximum length of the input buffer
 maxlen = 256
 
-// error code constants
-einval = 22
+// error code constant
 erange = 34
 
 .code
@@ -23,9 +37,6 @@ erange = 34
 
 title:
 	.asciz "Listing 7-2"
-
-val_fmt:
-	.asciz "value=%d, error=%d\n"
 
 prompt_fmt:
 	.ascii "Enter an integer value between "
@@ -47,12 +58,9 @@ err_unknown_fmt:
 	.asciz "(unknown error)\n"
 
 ok_fmt:
-	.ascii "The input value is %d\n"
+	.asciz "The input value is %d\n"
 
-res_fmt:
-	.asciz "result:%d, errno:%d\n"
-
-	.align 4
+.align 4
 
 _getTitle:
 	adrl x0, title
@@ -63,7 +71,7 @@ _getTitle:
 // Converts a string to an integer using strtol(), checking for errors.
 //
 // Parameters:
-// - string: The string to convert.
+// - string: The address of the string to convert.
 //
 // Returns:
 // - X0: The converted integer value.
@@ -156,7 +164,7 @@ prompt:
 	// initialize state machine
 	adrl x19, err_readline
 
-	// if (ret < 0) goto dispatch;
+	// if (ret < 0) dispatch to err_readline;
 	ands w0, w0, w0
 	bmi  dispatch
 
@@ -181,12 +189,12 @@ prompt:
 	cmp  w1, #0
 	bne  dispatch
 
-	// at this point, we have valid input in w0
+	// at this point, we have a valid value in w0
 	// if (value == 0) quit the program
 	ands w0, w0, w0
 	beq  finish
 
-	// verify that the value is in the range 1-10
+	// if (value < 1 or value > 10) dispatch to err_range
 	adrl x19, err_range
 	cmp  w0, #1
 	blt  dispatch
@@ -200,29 +208,44 @@ dispatch:
 	br x19
 
 err_readline:
+	// printf("There was an error in readline (Ctrl-D pressed?)\n", ret);
+	// and quit the program
 	adrl x0, err_readline_fmt
 	bl   _printf
-	b    prompt
+	b    finish
 
 err_input:
+	// printf("The input string is not a proper number\n");
+	// and go back to the prompt
 	adrl x0, err_input_fmt
 	bl   _printf
 	b    prompt
 
 err_range:
+	// printf("The input value is outside the range 1-10\n");
+	// and go back to the prompt
 	adrl x0, err_range_fmt
 	bl   _printf
 	b    prompt
 
 err_unknown:
+	// printf("There was a problem with strtoint (unknown error)\n");
+	// and go back to the prompt
 	adrl x0, err_unknown_fmt
 	bl   _printf
 	b    prompt
 
 ok:
+	// printf("The input value is %d\n", value);
+	// and go back to the prompt
+	mov  w1, w0
+	str  w1, [sp]
+	adrl x0, ok_fmt
+	bl   _printf
+	b    prompt
 
 finish:
-
+	// quit the program
 	leave
 	ldp x19, x20, [sp], #0x10
 	ret
