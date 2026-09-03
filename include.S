@@ -27,6 +27,12 @@ adrp   \reg, \mem@PAGE
 add    \reg, \reg, \mem@PAGEOFF
 .endm
 
+// gets the value of errno
+.macro get_errno
+bl     ___error
+ldr    w0, [x0]
+.endm
+
 // loads variadic function parameters onto the stack
 .macro vparm2 mem
 adrl   x1, \mem
