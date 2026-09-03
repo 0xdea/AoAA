@@ -24,32 +24,32 @@ erange = 34
 title:
 	.asciz "Listing 7-2"
 
-val_err_fmt:
+val_fmt:
 	.asciz "value=%d, error=%d\n"
 
 prompt_fmt:
 	.ascii "Enter an integer value between "
 	.asciz "1 and 10 (0 to quit): "
 
-readline_err_fmt:
+err_readline_fmt:
 	.ascii "There was an error in readline "
 	.asciz "(Ctrl-D pressed?)\n"
 
-input_err_fmt:
+err_input_fmt:
 	.asciz "The input string is not a proper number\n"
 
-range_fmt:
+err_range_fmt:
 	.ascii "The input value is outside the "
 	.asciz "range 1-10\n"
 
-strtoint_err_fmt:
+err_unknown_fmt:
 	.ascii "There was a problem with strtoint "
 	.asciz "(unknown error)\n"
 
-inout_ok_fmt:
+ok_fmt:
 	.ascii "The input value is %d\n"
 
-res_err_fmt:
+res_fmt:
 	.asciz "result:%d, errno:%d\n"
 
 	.align 4
@@ -137,6 +137,8 @@ return:
 	ret
 
 // void _asmMain(void);
+//
+// Demonstrates how to call strtoint.
 _asmMain:
 	stp   x19, x20, [sp, #-0x10]!
 	enter 0x40
@@ -152,16 +154,74 @@ prompt:
 	bl   _readline
 
 	// initialize state machine
-	adrl x19, bad_input
+	adrl x19, err_readline
 
-	// if (ret < 0) goto had_error;
+	// if (ret < 0) goto dispatch;
 	ands w0, w0, w0
-	bmi  had_error
+	bmi  dispatch
 
-had_error:
+	// value = strtoint(buffer);
+	adrl x0, buffer
+	bl   strtoint
+
+	// if (strtoint failed with w1 == 1 or 2) dispatch to err_input
+	adrl x19, err_input
+	cmp  w1, #1
+	beq  dispatch
+	cmp  w1, #2
+	beq  dispatch
+
+	// if (strtoint failed with w1 == 3) dispatch to err_range
+	adrl x19, err_range
+	cmp  w1, #3
+	beq  dispatch
+
+	// if (strtoint failed with w1 != 0) dispatch to err_unknown
+	adrl x19, err_unknown
+	cmp  w1, #0
+	bne  dispatch
+
+	// at this point, we have valid input in w0
+	// if (value == 0) quit the program
+	ands w0, w0, w0
+	beq  finish
+
+	// verify that the value is in the range 1-10
+	adrl x19, err_range
+	cmp  w0, #1
+	blt  dispatch
+	cmp  w0, #10
+	bgt  dispatch
+
+	// dispatch to ok
+	adrl x19, ok
+
+dispatch:
 	br x19
 
-bad_input:
+err_readline:
+	adrl x0, err_readline_fmt
+	bl   _printf
+	b    prompt
+
+err_input:
+	adrl x0, err_input_fmt
+	bl   _printf
+	b    prompt
+
+err_range:
+	adrl x0, err_range_fmt
+	bl   _printf
+	b    prompt
+
+err_unknown:
+	adrl x0, err_unknown_fmt
+	bl   _printf
+	b    prompt
+
+ok:
+
+finish:
 
 	leave
 	ldp x19, x20, [sp], #0x10
