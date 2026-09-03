@@ -8,7 +8,9 @@
 // The input string is not a proper number
 // Enter an integer value between 1 and 10 (0 to quit): 123a
 // The input string is not a proper number
-// Enter an integer value between 1 and 10 (0 to quit): 1234567890123
+// Enter an integer value between 1 and 10 (0 to quit): 9999999999999999999999999999
+// The input value is outside the range 1-10
+// Enter an integer value between 1 and 10 (0 to quit): -999999999999999999999999999
 // The input value is outside the range 1-10
 // Enter an integer value between 1 and 10 (0 to quit): -1
 // The input value is outside the range 1-10
@@ -59,6 +61,9 @@ err_unknown_fmt:
 
 ok_fmt:
 	.asciz "The input value is %d\n"
+
+debug_fmt:
+	.asciz "%016lx\n"
 
 .align 4
 
@@ -113,27 +118,28 @@ strtoint:
 	bne  return
 
 	// if ret is LONG_MAX (0x7fff_ffff_ffff_ffff) or LONG_MIN (0x8000_0000_0000_0000) and the global
-	// errno is set to ERANGE, there's a range error (overflow or underflow, respectively)
-	str w0, [fp, #value]
+	// errno variable is set to ERANGE, there's a range error (overflow or underflow, respectively)
+	str x0, [fp, #value]
 	get_errno
-	mov x2, x0
-	ldr w0, [fp, #value]
+	mov w2, w0
+	ldr x0, [fp, #value]
 
 	// if (errno != ERANGE) return 0;
 	mov x1, #0
 	cmp w2, #erange
 	bne return
 
-	// if (errno == ERANGE) return 3;
-	mov  x1, #3
-	mov  x2, 0xffff
-	movk x2, #0x7fff, lsl #16
+	// if (errno == ERANGE) && (ret == LONG_MAX || ret == LONG_MIN) return 3;
+	mov x1, #3
 
-	cmp w0, w2
-	beq return
+	// x2 = LONG_MIN
+	movz x2, #0x8000, lsl #48
+	cmp  x0, x2
+	beq  return
 
-	mvn w2, w2
-	cmp w0, w2
+	// x2 = LONG_MAX
+	mvn x2, x2
+	cmp x0, x2
 	beq return
 
 	// if we get here, the input is a good number
@@ -165,40 +171,40 @@ prompt:
 	adrl x19, err_readline
 
 	// if (ret < 0) dispatch to err_readline;
-	ands w0, w0, w0
+	ands x0, x0, x0
 	bmi  dispatch
 
 	// value = strtoint(buffer);
 	adrl x0, buffer
 	bl   strtoint
 
-	// if (strtoint failed with w1 == 1 or 2) dispatch to err_input
+	// if (strtoint failed with x1 == 1 or 2) dispatch to err_input
 	adrl x19, err_input
-	cmp  w1, #1
+	cmp  x1, #1
 	beq  dispatch
-	cmp  w1, #2
+	cmp  x1, #2
 	beq  dispatch
 
-	// if (strtoint failed with w1 == 3) dispatch to err_range
+	// if (strtoint failed with x1 == 3) dispatch to err_range
 	adrl x19, err_range
-	cmp  w1, #3
+	cmp  x1, #3
 	beq  dispatch
 
-	// if (strtoint failed with w1 != 0) dispatch to err_unknown
+	// if (strtoint failed with x1 != 0) dispatch to err_unknown
 	adrl x19, err_unknown
-	cmp  w1, #0
+	cmp  x1, #0
 	bne  dispatch
 
-	// at this point, we have a valid value in w0
+	// at this point, we have a valid value in x0
 	// if (value == 0) quit the program
-	ands w0, w0, w0
+	ands x0, x0, x0
 	beq  finish
 
 	// if (value < 1 or value > 10) dispatch to err_range
 	adrl x19, err_range
-	cmp  w0, #1
+	cmp  x0, #1
 	blt  dispatch
-	cmp  w0, #10
+	cmp  x0, #10
 	bgt  dispatch
 
 	// dispatch to ok
@@ -238,8 +244,8 @@ err_unknown:
 ok:
 	// printf("The input value is %d\n", value);
 	// and go back to the prompt
-	mov  w1, w0
-	str  w1, [sp]
+	mov  x1, x0
+	str  x1, [sp]
 	adrl x0, ok_fmt
 	bl   _printf
 	b    prompt
