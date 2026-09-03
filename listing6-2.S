@@ -93,6 +93,7 @@ done:
 error = 0x10
 diff  = 0x18
 
+// void _asmMain(void);
 _asmMain:
 	enter 0x40
 

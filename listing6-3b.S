@@ -101,6 +101,7 @@ do_pi:
 	ldp x19, x20, [sp], #0x10
 	ret
 
+// void _asmMain(void);
 _asmMain:
 	enter 0x40
 

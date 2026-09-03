@@ -45,6 +45,7 @@ global_label1:
 global_label2:
 	ret
 
+// void _asmMain(void);
 _asmMain:
 	enter 0x40
 
