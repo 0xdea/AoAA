@@ -2,7 +2,11 @@
 //
 // ```
 // $ ./build listing7-1
-// $ ./listing7-1
+// Illegal text-relocations:
+//   text-relocation in 'data_in_code'+0x8 (/private/var/folders/dd/_kx5dv0x0yxfv529cmy6ynp00000gn/T/listing7-1-13c5aa.o) to 'global_label2'
+//   text-relocation in 'data_in_code' (/private/var/folders/dd/_kx5dv0x0yxfv529cmy6ynp00000gn/T/listing7-1-13c5aa.o) to 'global_label1'
+// ld: Found illegal text-relocations
+// clang++: error: linker command failed with exit code 1 (use -v to see invocation)
 // ```
 
 #include "include.S"
@@ -15,11 +19,17 @@
 .pool
 .balign 8
 
-title:
-	.asciz "Listing 7-1"
-
+// Storing the addresses of global_label1/global_label2 here means this .dword pair still
+// lives in .text (no .data directive follows .code above), so the linker must patch two
+// absolute addresses into the code segment at load time. On arm64 macOS, __TEXT is always
+// read-only/non-relocatable under PIE, so this fails to link with "Illegal text-relocations".
+// Compare with labels_in_proc below, which stores the very same two label addresses but in
+// .data, where such relocations are allowed.
 data_in_code:
 	.dword global_label1, global_label2
+
+title:
+	.asciz "Listing 7-1"
 
 _getTitle:
 	adrl x0, title
