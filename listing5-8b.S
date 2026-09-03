@@ -27,7 +27,7 @@ _getTitle:
 //
 // Prints the value of w0.
 //
-// Arguments:
+// Parameters:
 // - w0: The value to print.
 byval:
 	enter 8
@@ -44,7 +44,7 @@ byval:
 //
 // Prints the address of x0 and the value at that address.
 //
-// Arguments:
+// Parameters:
 // - x0: The address of the word to print.
 byref:
 	enter 0x10

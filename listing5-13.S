@@ -52,7 +52,7 @@ _getTitle:
 //
 // Sorts an array of integers using the quicksort algorithm.
 //
-// Arguments:
+// Parameters:
 // - arr: The address of the array to sort.
 // - low: The index of the first element to sort.
 // - high: The index of the last element to sort.

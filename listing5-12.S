@@ -59,7 +59,7 @@ _getTitle:
 //
 // Initializes the points_array (array of points) at the given address.
 //
-// Arguments:
+// Parameters:
 // - ptr: The address of the points_array to initialize.
 
 // offset to ptr from fp

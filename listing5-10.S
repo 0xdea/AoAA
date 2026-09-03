@@ -27,7 +27,7 @@ _getTitle:
 //
 // Expects a single word parameter passed by value on the stack.
 //
-// Arguments:
+// Parameters:
 // - parm: The word value passed on the stack.
 
 // offset to parm from fp

@@ -26,7 +26,7 @@ _getTitle:
 //
 // Prints the values of w0 and w1 using a format string.
 //
-// Arguments:
+// Parameters:
 // - w0: The first word to print.
 // - w1: The second word to print.
 //

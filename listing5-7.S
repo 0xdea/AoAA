@@ -38,7 +38,7 @@ _getTitle:
 //
 // Prints the address of x0 and the value at that address.
 //
-// Arguments:
+// Parameters:
 // - x0: The address of the word to print.
 
 somefunc:
