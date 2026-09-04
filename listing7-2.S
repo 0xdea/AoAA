@@ -85,7 +85,6 @@ _getTitle:
 //   - 1: Conversion failed (illegal characters at the beginning of the string or empty string).
 //   - 2: Conversion failed (illegal characters at the end of the string).
 //   - 3: Conversion failed (value too large to store in a 32-bit signed integer).
-//
 
 endptr = 0x10
 value  = 0x18

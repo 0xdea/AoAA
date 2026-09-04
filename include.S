@@ -33,7 +33,7 @@ bl     ___error
 ldr    w0, [x0]
 .endm
 
-// loads variadic function parameters onto the stack
+// loads variadic function parameters on the stack
 .macro vparm2 mem
 adrl   x1, \mem
 ldr    x1, [x1]
@@ -63,3 +63,54 @@ adrl   x5, \mem
 ldr    x5, [x5]
 str    x5, [sp, #0x20]
 .endm
+
+.macro vparm7 mem
+adrl   x6, \mem
+ldr    x6, [x6]
+str    x6, [sp, #0x28]
+.endm
+
+.macro vparm8 mem
+adrl   x7, \mem
+ldr    x7, [x7]
+str    x7, [sp, #0x30]
+.endm
+
+// opposite conditions for conditional instructions
+#define nhi ls
+#define nhs lo
+#define nlo hs
+#define nls hi
+#define ngt le
+#define nge lt
+#define nlt ge
+#define nle gt
+
+// constants to use in the immediate field of ccmp (NZCV)
+.equ cceq, 0b0100 // Z=1
+.equ ccne, 0b0000 // Z=0
+
+.equ cchi, 0b0010 // C=1
+.equ cchs, 0b0110 // Z=1, C=1
+.equ cclo, 0b0000 // Z=0, C=0
+.equ ccls, 0b0100 // Z=1, C=0
+.equ ccgt, 0b0000 // Z=0, N=V
+.equ ccge, 0b0100 // Z=1, N=V
+.equ cclt, 0b0001 // Z=0, N!=V
+.equ ccle, 0b0101 // Z=1, N!=V
+
+.equ ccnhi, 0b0100 // Not HI=LS, Z=1, C=0
+.equ ccnhs, 0b0000 // Not HS=LO, Z=0, C=0
+.equ ccnlo, 0b0110 // Not LO=HS, Z=1, C=1
+.equ ccnls, 0b0100 // Not LS=HI, C=1
+.equ ccngt, 0b0101 // Not GT=LE, Z=1, N!=V
+.equ ccnge, 0b0001 // Not GE=LT, Z=0, N!=V
+.equ ccnlt, 0b0100 // Not LT=GE, Z=1, N=V
+.equ ccnle, 0b0000 // Not LE=GT, Z=0, N=V
+
+.equ cccs, 0b0010 // C=1
+.equ cccc, 0b0000 // C=0
+.equ ccvs, 0b0001 // V=1
+.equ ccvc, 0b0000 // V=0
+.equ ccmi, 0b1000 // N=1
+.equ ccpl, 0b0000 // N=0
