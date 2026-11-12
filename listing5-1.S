@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing5-1
-// $ ./listing5-1
+// $ ./listing5-1.out
 // Calling Listing 5-1:
 // array[0] = 0xffffffff
 // array[1] = 0xffffffff
@@ -29,6 +29,18 @@
 
 // array length (256 words)
 len = 0x100
+
+.data
+
+// 4byte/word array of #len elements initialized to 0xffffffff
+array:
+	.space len * (4), 0xff
+
+fmt:
+	.asciz "array[%d] = 0x%x\n"
+
+title:
+	.asciz "Listing 5-1"
 
 .code
 
@@ -137,15 +149,3 @@ _asmMain:
 
 	leave
 	ret
-
-.data
-
-// 4byte/word array of #len elements initialized to 0xffffffff
-array:
-	.space len * (4), 0xff
-
-fmt:
-	.asciz "array[%d] = 0x%x\n"
-
-title:
-	.asciz "Listing 5-1"

@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing2-4
-// $ ./listing2-4
+// $ ./listing2-4.out
 // Calling Listing 2-4:
 // Enter current month: 2
 // Enter current day: 4
@@ -42,6 +42,71 @@ str    x4, [sp, #0x20]
 .endm
 
 .equ maxLen, 0x100
+
+.data
+.balign 4
+
+titleStr:
+	.asciz "Listing 2-4"
+
+moPrompt:
+	.asciz "Enter current month: "
+
+dayPrompt:
+	.asciz "Enter current day: "
+
+yearPrompt:
+	.ascii "Enter current year "
+	.asciz "(last 2 digits only): "
+
+packedFmt:
+	.ascii "Packed date is %04x = "
+	.asciz "%02d/%02d/%02d\n"
+
+theDateFmt:
+	.asciz "The date is %02d/%02d/%02d\n"
+
+badDayStr:
+	.ascii "Bad day value was entered "
+	.asciz "(expected 1-31)\n"
+
+badMonthStr:
+	.ascii "Bad month value was entered "
+	.asciz "(expected 1-12)\n"
+
+badYearStr:
+	.ascii "Bad year value was entered "
+	.asciz "(expected 00-99)\n"
+
+month:
+	.8byte 0
+
+day:
+	.8byte 0
+
+year:
+	.8byte 0
+
+date:
+	.8byte 0
+
+m:
+	.8byte 0
+
+d:
+	.8byte 0
+
+y:
+	.8byte 0
+
+saveLRasmMain:
+	.8byte 0
+
+saveLRreadNum:
+	.8byte 0
+
+input:
+	.fill maxLen
 
 .text
 .balign 4
@@ -215,68 +280,3 @@ allDone:
 	add sp, sp, #0x40
 
 	ret
-
-.data
-.balign 4
-
-titleStr:
-	.asciz "Listing 2-4"
-
-moPrompt:
-	.asciz "Enter current month: "
-
-dayPrompt:
-	.asciz "Enter current day: "
-
-yearPrompt:
-	.ascii "Enter current year "
-	.asciz "(last 2 digits only): "
-
-packedFmt:
-	.ascii "Packed date is %04x = "
-	.asciz "%02d/%02d/%02d\n"
-
-theDateFmt:
-	.asciz "The date is %02d/%02d/%02d\n"
-
-badDayStr:
-	.ascii "Bad day value was entered "
-	.asciz "(expected 1-31)\n"
-
-badMonthStr:
-	.ascii "Bad month value was entered "
-	.asciz "(expected 1-12)\n"
-
-badYearStr:
-	.ascii "Bad year value was entered "
-	.asciz "(expected 00-99)\n"
-
-month:
-	.8byte 0
-
-day:
-	.8byte 0
-
-year:
-	.8byte 0
-
-date:
-	.8byte 0
-
-m:
-	.8byte 0
-
-d:
-	.8byte 0
-
-y:
-	.8byte 0
-
-saveLRasmMain:
-	.8byte 0
-
-saveLRreadNum:
-	.8byte 0
-
-input:
-	.fill maxLen

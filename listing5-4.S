@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing5-4
-// $ ./listing5-4
+// $ ./listing5-4.out
 // Calling Listing 5-4:
 //                                         *, 20
 //                                         *, 19
@@ -28,6 +28,20 @@
 // ```
 
 #include "include.S"
+
+.data
+
+index:
+	.word .-.
+
+space:
+	.asciz " "
+
+asterisk:
+	.asciz "*, %d\n"
+
+title:
+	.asciz "Listing 5-4"
 
 .code
 
@@ -90,17 +104,3 @@ _asmMain:
 	ldp x19, x20, [sp], #0x10
 
 	ret
-
-.data
-
-index:
-	.word .-.
-
-space:
-	.asciz " "
-
-asterisk:
-	.asciz "*, %d\n"
-
-title:
-	.asciz "Listing 5-4"

@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing2-1
-// $ ./listing2-1
+// $ ./listing2-1.out
 // Calling Listing 2-1:
 // i=1, converted to hex=1
 // j=123, converted to hex=7b
@@ -29,6 +29,33 @@ adrl   x2, \mem
 ldr    x2, [x2]
 str    x2, [sp, #0x08]
 .endm
+
+.data
+.balign 4
+
+titleStr:
+	.asciz "Listing 2-1"
+
+fmtStrI:
+	.asciz "i=%d, converted to hex=%x\n"
+
+fmtStrJ:
+	.asciz "j=%d, converted to hex=%x\n"
+
+fmtStrK:
+	.asciz "k=%d, converted to hex=%x\n"
+
+i:
+	.8byte 1
+
+j:
+	.8byte 123
+
+k:
+	.8byte 456789
+
+saveLR:
+	.8byte 0
 
 .text
 .balign 4
@@ -75,30 +102,3 @@ _asmMain:
 	add sp, sp, #0x40
 
 	ret
-
-.data
-.balign 4
-
-titleStr:
-	.asciz "Listing 2-1"
-
-fmtStrI:
-	.asciz "i=%d, converted to hex=%x\n"
-
-fmtStrJ:
-	.asciz "j=%d, converted to hex=%x\n"
-
-fmtStrK:
-	.asciz "k=%d, converted to hex=%x\n"
-
-i:
-	.8byte 1
-
-j:
-	.8byte 123
-
-k:
-	.8byte 456789
-
-saveLR:
-	.8byte 0

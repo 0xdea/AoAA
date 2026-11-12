@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing4-1
-// $ ./listing4-1
+// $ ./listing4-1.out
 // Calling Listing 4-1:
 // pb's value is 0x102640002
 // *pb's value is 2
@@ -37,6 +37,30 @@ adrl   x4, \mem
 ldr    x4, [x4]
 str    x4, [sp, #0x18]
 .endm
+
+.data
+.balign 8
+
+// address of "2" in bb
+pb = bb + 2
+
+bb:
+	.byte 0
+	.byte 1, 2, 3, 4, 5, 6, 7
+
+pbVar:
+	// pointer to "2" in bb
+	.8byte pb
+
+pbValue:
+	.4byte 0
+
+fmtStr:
+	.ascii "pb's value is %p\n"
+	.asciz "*pb's value is %d\n"
+
+titleStr:
+	.asciz "Listing 4-1"
 
 .text
 .balign 4
@@ -77,27 +101,3 @@ _asmMain:
 	ldr lr, [sp], #0x10
 
 	ret
-
-.data
-.balign 8
-
-// address of "2" in bb
-pb = bb + 2
-
-bb:
-	.byte 0
-	.byte 1, 2, 3, 4, 5, 6, 7
-
-pbVar:
-	// pointer to "2" in bb
-	.8byte pb
-
-pbValue:
-	.4byte 0
-
-fmtStr:
-	.ascii "pb's value is %p\n"
-	.asciz "*pb's value is %d\n"
-
-titleStr:
-	.asciz "Listing 4-1"

@@ -2,13 +2,21 @@
 //
 // ```
 // $ ./build listing5-5
-// $ ./listing5-5
+// $ ./listing5-5.out
 // Calling Listing 5-5:
 // w0=23, w1=42
 // Listing 5-5 terminated.
 // ```
 
 #include "include.S"
+
+.data
+
+fmt:
+	.asciz "w0=%d, w1=%d\n"
+
+title:
+	.asciz "Listing 5-5"
 
 .code
 
@@ -63,11 +71,3 @@ _asmMain:
 
 	leave
 	ret
-
-.data
-
-fmt:
-	.asciz "w0=%d, w1=%d\n"
-
-title:
-	.asciz "Listing 5-5"

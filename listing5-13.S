@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing5-13
-// $ ./listing5-13
+// $ ./listing5-13.out
 // Calling Listing 5-13:
 // Data before sorting:
 // 	1
@@ -35,6 +35,29 @@
 
 // number of elements in the array
 count = 10
+
+.data
+
+fmt1:
+	.asciz "Data before sorting:\n"
+
+fmt2:
+	.ascii "%d"
+
+fmt3:
+	.asciz "\n"
+
+fmt4:
+	.asciz "Data after sorting:\n"
+
+fmt5:
+	.asciz "arr=%p, low=%d, high=%d\n"
+
+array:
+	.word 1, 10, 2, 9, 3, 8, 4, 7, 5, 6
+
+title:
+	.asciz "Listing 5-13"
 
 .code
 
@@ -241,26 +264,3 @@ _asmMain:
 	ldp x19, x20, [sp], #0x10
 
 	ret
-
-.data
-
-fmt1:
-	.asciz "Data before sorting:\n"
-
-fmt2:
-	.ascii "%d"
-
-fmt3:
-	.asciz "\n"
-
-fmt4:
-	.asciz "Data after sorting:\n"
-
-fmt5:
-	.asciz "arr=%p, low=%d, high=%d\n"
-
-array:
-	.word 1, 10, 2, 9, 3, 8, 4, 7, 5, 6
-
-title:
-	.asciz "Listing 5-13"

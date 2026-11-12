@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing5-8b
-// $ ./listing5-8b
+// $ ./listing5-8b.out
 // Calling Listing 5-8b:
 // value=42
 // address=0x16b43709c, value=42
@@ -10,6 +10,17 @@
 // ```
 
 #include "include.S"
+
+.data
+
+fmtref:
+	.asciz "address=%p, value=%d\n"
+
+fmtval:
+	.asciz "value=%d\n"
+
+title:
+	.asciz "Listing 5-8b"
 
 .code
 
@@ -85,14 +96,3 @@ _asmMain:
 
 	leave
 	ret
-
-.data
-
-fmtref:
-	.asciz "address=%p, value=%d\n"
-
-fmtval:
-	.asciz "value=%d\n"
-
-title:
-	.asciz "Listing 5-8b"

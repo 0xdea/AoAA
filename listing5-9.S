@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing5-9
-// $ ./listing5-9
+// $ ./listing5-9.out
 // Calling Listing 5-9:
 // Hello, world
 // Listing 5-9 terminated.
@@ -11,6 +11,11 @@
 #include "include.S"
 
 .code
+
+.pool
+
+title:
+	.asciz "Listing 5-9"
 
 .global _getTitle
 .global _asmMain
@@ -95,8 +100,3 @@ _asmMain:
 
 	leave
 	ret
-
-.pool
-
-title:
-	.asciz "Listing 5-9"

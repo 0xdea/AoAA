@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing7-2
-// $ ./listing7-2
+// $ ./listing7-2.out
 // Calling Listing 7-2:
 // Enter an integer value between 1 and 10 (0 to quit): a123
 // The input string is not a proper number

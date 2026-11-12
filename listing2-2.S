@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing2-2
-// $ ./listing2-2
+// $ ./listing2-2.out
 // Calling Listing 2-2:
 // f0f0f0f AND f0f0f0f0 = 0
 // f0f0f0f OR f0f0f0f0 = ffffffff
@@ -35,6 +35,39 @@ adrl   x3, \mem
 ldr    x3, [x3]
 str    x3, [sp, #0x10]
 .endm
+
+.data
+.balign 4
+
+titleStr:
+	.asciz "Listing 2-2"
+
+fmtStr1:
+	.asciz "%lx AND %lx = %lx\n"
+
+fmtStr2:
+	.asciz "%lx OR %lx = %lx\n"
+
+fmtStr3:
+	.asciz "%lx XOR %lx = %lx\n"
+
+fmtStr4:
+	.asciz "NOT %lx = %lx\n"
+
+leftOp:
+	.8byte 0xf0f0f0f
+
+rightOp1:
+	.8byte 0xf0f0f0f0
+
+rightOp2:
+	.8byte 0x12345678
+
+result:
+	.8byte 0
+
+saveLR:
+	.8byte 0
 
 .text
 .balign 4
@@ -142,36 +175,3 @@ _asmMain:
 	add sp, sp, #0x40
 
 	ret
-
-.data
-.balign 4
-
-titleStr:
-	.asciz "Listing 2-2"
-
-fmtStr1:
-	.asciz "%lx AND %lx = %lx\n"
-
-fmtStr2:
-	.asciz "%lx OR %lx = %lx\n"
-
-fmtStr3:
-	.asciz "%lx XOR %lx = %lx\n"
-
-fmtStr4:
-	.asciz "NOT %lx = %lx\n"
-
-leftOp:
-	.8byte 0xf0f0f0f
-
-rightOp1:
-	.8byte 0xf0f0f0f0
-
-rightOp2:
-	.8byte 0x12345678
-
-result:
-	.8byte 0
-
-saveLR:
-	.8byte 0

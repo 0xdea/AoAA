@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing6-2
-// $ ./listing6-2
+// $ ./listing6-2.out
 // Calling Listing 6-2:
 // Value1=9.8813129168249309e-324, Value2=8.8931816251424378e-323
 // Error for 9.8813129168249309e-324 = 7.410985e-323
@@ -20,10 +20,38 @@ exp_pos = 52
 exp_mask = 0x7FF0000000000000
 
 // number of bits to mask out at the bottom of the mantissa (must be greater than 0)
-bits = 4
+bits     = 4
 bit_mask = (1 << bits) - 1
 
 .code
+
+.pool
+.balign 8
+
+value1:
+	.double 1.0e-323 // for equality, try also: 1.2345678901234567
+
+value2:
+	// When value2 is somewhere between 8e-323 and 9e-323, the comparison becomes not equal
+	.double 9e-323 // for equality, try also: 1.234567890123456
+
+err_fmt:
+	.asciz "Error for %23.16e = %e\n"
+
+dif_fmt:
+	.asciz "Difference: %e\n"
+
+val_fmt:
+	.asciz "Value1=%23.16e, Value2=%23.16e\n"
+
+eq_fmt:
+	.asciz "Value1 == Value2\n"
+
+ne_fmt:
+	.asciz "Value1 != Value2\n"
+
+title:
+	.asciz "Listing 6-2"
 
 .global _getTitle
 .global _asmMain
@@ -146,31 +174,3 @@ print:
 
 	leave
 	ret
-
-.pool
-.balign 8
-
-value1:
-	.double 1.0e-323 // for equality, try also: 1.2345678901234567
-
-value2:
-	// When value2 is somewhere between 8e-323 and 9e-323, the comparison becomes not equal
-	.double 9e-323 // for equality, try also: 1.234567890123456
-
-err_fmt:
-	.asciz "Error for %23.16e = %e\n"
-
-dif_fmt:
-	.asciz "Difference: %e\n"
-
-val_fmt:
-	.asciz "Value1=%23.16e, Value2=%23.16e\n"
-
-eq_fmt:
-	.asciz "Value1 == Value2\n"
-
-ne_fmt:
-	.asciz "Value1 != Value2\n"
-
-title:
-	.asciz "Listing 6-2"

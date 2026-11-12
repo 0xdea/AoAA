@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing6-1
-// $ ./listing6-1
+// $ ./listing6-1.out
 // Calling Listing 6-1:
 // g1: 55, g2: 44, g3: 255, g4: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA// AAAAAAAAAAAAAAAAAAAAAAAAA, g5: 0
 // Listing 6-1 terminated.

@@ -1,7 +1,7 @@
 // listing7-1.S - Demonstrates initializing 8-byte values with the addresses of statement labels
 //
 // ```
-// $ ./build listing7-1
+// $ ./build listing7-1.out
 // Illegal text-relocations:
 //   text-relocation in 'data_in_code'+0x8 (/private/var/folders/dd/_kx5dv0x0yxfv529cmy6ynp00000gn/T/listing7-1-13c5aa.o) to 'global_label2'
 //   text-relocation in 'data_in_code' (/private/var/folders/dd/_kx5dv0x0yxfv529cmy6ynp00000gn/T/listing7-1-13c5aa.o) to 'global_label1'
@@ -10,6 +10,12 @@
 // ```
 
 #include "include.S"
+
+.data
+.balign 8
+
+labels_in_proc:
+	.dword global_label1, global_label2
 
 .code
 
@@ -51,9 +57,3 @@ _asmMain:
 
 	leave
 	ret
-
-.data
-.balign 8
-
-labels_in_proc:
-	.dword global_label1, global_label2

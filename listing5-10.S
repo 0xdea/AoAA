@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing5-10
-// $ ./listing5-10
+// $ ./listing5-10.out
 // Calling Listing 5-10:
 // Value of parameter: 20
 // Value of parameter: 30
@@ -10,6 +10,20 @@
 // ```
 
 #include "include.S"
+
+.data
+
+value1:
+	.word 20
+
+value2:
+	.word 30
+
+fmt:
+	.asciz "Value of parameter: %d\n"
+
+title:
+	.asciz "Listing 5-10"
 
 .code
 
@@ -63,17 +77,3 @@ _asmMain:
 
 	leave
 	ret
-
-.data
-
-value1:
-	.word 20
-
-value2:
-	.word 30
-
-fmt:
-	.asciz "Value of parameter: %d\n"
-
-title:
-	.asciz "Listing 5-10"

@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing5-12
-// $ ./listing5-12
+// $ ./listing5-12.out
 // Calling Listing 5-12:
 // points_array[0].x = 0	points_array[0].y = 0
 // points_array[1].x = 0	points_array[1].y = 1
@@ -42,6 +42,20 @@ pt_count = 24
 // offsets of elements in the struct
 x = 0
 y = 1
+
+.data
+
+points_array:
+	.space pt_count * pt_size
+
+fmtx:
+	.asciz "points_array[%d].x = %d\t"
+
+fmty:
+	.asciz "points_array[%d].y = %d\n"
+
+title:
+	.asciz "Listing 5-12"
 
 .code
 
@@ -154,17 +168,3 @@ end_loop:
 	ldp x19, x20, [sp], #0x10
 
 	ret
-
-.data
-
-points_array:
-	.space pt_count * pt_size
-
-fmtx:
-	.asciz "points_array[%d].x = %d\t"
-
-fmty:
-	.asciz "points_array[%d].y = %d\n"
-
-title:
-	.asciz "Listing 5-12"

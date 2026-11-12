@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing4-2
-// $ ./listing4-2
+// $ ./listing4-2.out
 // Calling Listing 4-2:
 // Addresses returned by malloc: 0x10026dad0, 0x10026f0a0
 // Listing 4-2 terminated.
@@ -57,6 +57,20 @@ ldr    x4, [x4]
 str    x4, [sp, #0x18]
 .endm
 
+.data
+
+ptrVar:
+	.8byte .-.
+
+ptrVar2:
+	.8byte .-.
+
+fmtStr:
+	.asciz "Addresses returned by malloc: %p, %p\n"
+
+titleStr:
+	.asciz "Listing 4-2"
+
 .text
 .balign 4
 
@@ -109,17 +123,3 @@ _asmMain:
 	ldr lr, [sp], #0x10
 
 	ret
-
-.data
-
-ptrVar:
-	.8byte .-.
-
-ptrVar2:
-	.8byte .-.
-
-fmtStr:
-	.asciz "Addresses returned by malloc: %p, %p\n"
-
-titleStr:
-	.asciz "Listing 4-2"

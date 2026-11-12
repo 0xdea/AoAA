@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing2-3
-// $ ./listing2-3
+// $ ./listing2-3.out
 // Calling Listing 2-3:
 // Enter an integer between 0 and 127: 123
 // Value in hexadecimal: 7b
@@ -39,6 +39,44 @@ str    x3, [sp, #0x10]
 
 // max input line size
 .equ maxLen, 256
+
+.data
+.balign 4
+
+titleStr:
+	.asciz "Listing 2-3"
+
+promptStr:
+	.asciz "Enter an integer between 0 and 127: "
+
+fmtStr1:
+	.asciz "Value in hexadecimal: %x\n"
+
+fmtStr2:
+	.asciz "Invert all the bits (hexadecimal): %x\n"
+
+fmtStr3:
+	.asciz "Add 1 (hexadecimal): %x\n"
+
+fmtStr4:
+	.asciz "Output as signed integer: %d\n"
+
+fmtStr5:
+	.ascii "Negate again and output as signed integer:"
+	.asciz " %d\n"
+
+fmtStr6:
+	.asciz "Using neg instruction: %d\n"
+
+intValue:
+	.8byte 0
+
+saveLR:
+	.8byte 0
+
+input:
+	// alternatively, declare input in the bss section as follows: .lcomm input, maxLen
+	.space maxLen
 
 .text
 .balign 4
@@ -132,41 +170,3 @@ _asmMain:
 	add sp, sp, #0x40
 
 	ret
-
-.data
-.balign 4
-
-titleStr:
-	.asciz "Listing 2-3"
-
-promptStr:
-	.asciz "Enter an integer between 0 and 127: "
-
-fmtStr1:
-	.asciz "Value in hexadecimal: %x\n"
-
-fmtStr2:
-	.asciz "Invert all the bits (hexadecimal): %x\n"
-
-fmtStr3:
-	.asciz "Add 1 (hexadecimal): %x\n"
-
-fmtStr4:
-	.asciz "Output as signed integer: %d\n"
-
-fmtStr5:
-	.ascii "Negate again and output as signed integer:"
-	.asciz " %d\n"
-
-fmtStr6:
-	.asciz "Using neg instruction: %d\n"
-
-intValue:
-	.8byte 0
-
-saveLR:
-	.8byte 0
-
-input:
-	// alternatively, declare input in the bss section as follows: .lcomm input, maxLen
-	.space maxLen

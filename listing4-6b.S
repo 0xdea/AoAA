@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing4-6b
-// $ ./listing4-6b
+// $ ./listing4-6b.out
 // Calling Listing 4-6b:
 // sortme[0] = 1
 // sortme[1] = 2
@@ -28,6 +28,27 @@
 maxlen = 0x100
 true   = 1
 false  = 0
+
+.data
+
+sortme:
+	.4byte 1, 2, 16, 14, 3, 9, 4, 10
+	.4byte 5, 7, 15, 12, 8, 6, 11, 13
+
+	// number of 4-byte elements in sortme
+	sortsize = (. - sortme) / 4
+
+value:
+	.4byte 0
+
+index:
+	.8byte 0
+
+fmt:
+	.asciz "sortme[%d] = %d\n"
+
+title:
+	.asciz "Listing 4-6b"
 
 .code
 
@@ -146,24 +167,3 @@ loop:
 	ldp x19, x20, [sp], #0x10
 
 	ret
-
-.data
-
-sortme:
-	.4byte 1, 2, 16, 14, 3, 9, 4, 10
-	.4byte 5, 7, 15, 12, 8, 6, 11, 13
-
-	// number of 4-byte elements in sortme
-	sortsize = (. - sortme) / 4
-
-value:
-	.4byte 0
-
-index:
-	.8byte 0
-
-fmt:
-	.asciz "sortme[%d] = %d\n"
-
-title:
-	.asciz "Listing 4-6b"

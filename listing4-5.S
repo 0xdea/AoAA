@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing4-5
-// $ ./listing4-5
+// $ ./listing4-5.out
 // Calling Listing 4-5:
 // After strncpy, result_str = 'Hello, '
 // Length of result_str is 7
@@ -45,6 +45,66 @@ str    x4, [sp, #0x18]
 .endm
 
 maxlen = 0x100
+
+.data
+.balign 8
+
+result_str:
+	.space maxlen
+
+result_ptr:
+	.8byte result_str
+
+length:
+	.8byte 0
+
+result:
+	.8byte 0
+
+prompt:
+	.asciz "Input a string: "
+
+fmt1:
+	.asciz "After strncpy, result_str = '%s'\n"
+
+fmt2:
+	.asciz "After strncat, result_str = '%s'\n"
+
+fmt3:
+	.asciz "After strcmp (3), WO = %d\n"
+
+fmt4:
+	.asciz "After strcmp (4), WO = %d\n"
+
+fmt5:
+	.asciz "After strcmp (5), WO = %d\n"
+
+fmt6:
+	.asciz "After strchr, XO = '%s'\n"
+
+fmt7:
+	.asciz "After strstr, XO = '%s'\n"
+
+fmt8:
+	.asciz "Length of result_str is %d\n"
+
+str1:
+	.asciz "Hello, "
+
+str2:
+	.asciz "world!"
+
+str3:
+	.asciz "Hello, world!"
+
+str4:
+	.asciz "hello, world!"
+
+str5:
+	.asciz "HELLO, WORLD!"
+
+title:
+	.asciz "Listing 4-5"
 
 .text
 .balign 4
@@ -158,63 +218,3 @@ _asmMain:
 	ldr lr, [sp], #0x10
 
 	ret
-
-.data
-.balign 8
-
-result_str:
-	.space maxlen
-
-result_ptr:
-	.8byte result_str
-
-length:
-	.8byte 0
-
-result:
-	.8byte 0
-
-prompt:
-	.asciz "Input a string: "
-
-fmt1:
-	.asciz "After strncpy, result_str = '%s'\n"
-
-fmt2:
-	.asciz "After strncat, result_str = '%s'\n"
-
-fmt3:
-	.asciz "After strcmp (3), WO = %d\n"
-
-fmt4:
-	.asciz "After strcmp (4), WO = %d\n"
-
-fmt5:
-	.asciz "After strcmp (5), WO = %d\n"
-
-fmt6:
-	.asciz "After strchr, XO = '%s'\n"
-
-fmt7:
-	.asciz "After strstr, XO = '%s'\n"
-
-fmt8:
-	.asciz "Length of result_str is %d\n"
-
-str1:
-	.asciz "Hello, "
-
-str2:
-	.asciz "world!"
-
-str3:
-	.asciz "Hello, world!"
-
-str4:
-	.asciz "hello, world!"
-
-str5:
-	.asciz "HELLO, WORLD!"
-
-title:
-	.asciz "Listing 4-5"

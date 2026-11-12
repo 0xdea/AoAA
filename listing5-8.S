@@ -2,11 +2,11 @@
 //
 // ```
 // $ ./build listing5-8
-// $ ./listing5-8
+// $ ./listing5-8.out
 // Calling Listing 5-8:
 // address=0x16d87f09c, value=42
 // Listing 5-8 terminated.
-// $ lldb listing5-8
+// $ lldb listing5-8.out
 // (lldb) b main
 // Breakpoint 1: where = listing5-8`main, address = 0x00000001000005e8
 // (lldb) r
@@ -22,6 +22,14 @@
 // ```
 
 #include "include.S"
+
+.data
+
+fmt:
+	.asciz "address=%p, value=%d\n"
+
+title:
+	.asciz "Listing 5-8"
 
 .code
 
@@ -86,11 +94,3 @@ _asmMain:
 
 	leave
 	ret
-
-.data
-
-fmt:
-	.asciz "address=%p, value=%d\n"
-
-title:
-	.asciz "Listing 5-8"

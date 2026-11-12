@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing1-5
-// $ ./listing1-5
+// $ ./listing1-5.out
 // Calling Listing 1-5:
 // Hello, world!
 // Listing 1-5 terminated.
@@ -12,6 +12,17 @@
 adrp   \reg, \mem@PAGE          // \reg = page address of \mem
 add    \reg, \reg, \mem@PAGEOFF // \reg += offset within page
 .endm
+
+.data
+
+title:
+	.asciz "Listing 1-5"
+
+hwStr:
+	.asciz "Hello, world!\n"
+
+saveLR:
+	.8byte 0
 
 .text
 .balign 4
@@ -37,14 +48,3 @@ _asmMain:
 	ldr  lr, [x0]
 
 	ret
-
-.data
-
-title:
-	.asciz "Listing 1-5"
-
-hwStr:
-	.asciz "Hello, world!\n"
-
-saveLR:
-	.8byte 0

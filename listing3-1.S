@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing3-1
-// $ ./listing3-1
+// $ ./listing3-1.out
 // Calling Listing 3-1:
 // i[0] = 0
 // i[1] = 1
@@ -39,6 +39,26 @@ adrl   x4, \mem
 ldr    x4, [x4]
 str    x4, [sp, #0x18]
 .endm
+
+.data
+
+titleStr:
+	.asciz "Listing 3-1"
+
+fmtStr1:
+	.asciz "i[0] = %d\n"
+
+fmtStr2:
+	.asciz "i[1] = %d\n"
+
+fmtStr3:
+	.asciz "i[2] = %d\n"
+
+fmtStr4:
+	.asciz "i[3] = %d\n"
+
+outputVal:
+	.4byte 0
 
 .text
 .balign 4
@@ -96,23 +116,3 @@ _asmMain:
 	ldr lr, [sp], #0x10
 
 	ret
-
-.data
-
-titleStr:
-	.asciz "Listing 3-1"
-
-fmtStr1:
-	.asciz "i[0] = %d\n"
-
-fmtStr2:
-	.asciz "i[1] = %d\n"
-
-fmtStr3:
-	.asciz "i[2] = %d\n"
-
-fmtStr4:
-	.asciz "i[3] = %d\n"
-
-outputVal:
-	.4byte 0

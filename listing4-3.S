@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing4-3
-// $ ./listing4-3
+// $ ./listing4-3.out
 // Calling Listing 4-3:
 // fish: Job 1, './listing4-3' terminated by signal SIGSEGV (Address boundary error)
 // ```
@@ -36,6 +36,18 @@ ldr    x4, [x4]
 str    x4, [sp, #0x18]
 .endm
 
+.data
+
+ptrVar:
+	// uninitialized
+	.8byte .-.
+
+fmtStr:
+	.asciz "Pointer value = %p\n"
+
+titleStr:
+	.asciz "Listing 4-3"
+
 .text
 .balign 4
 
@@ -61,15 +73,3 @@ _asmMain:
 	ldr lr, [sp], #0x10
 
 	ret
-
-.data
-
-ptrVar:
-	// uninitialized
-	.8byte .-.
-
-fmtStr:
-	.asciz "Pointer value = %p\n"
-
-titleStr:
-	.asciz "Listing 4-3"

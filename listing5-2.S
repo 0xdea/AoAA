@@ -2,13 +2,21 @@
 //
 // ```
 // $ ./build listing5-2
-// $ ./listing5-2
+// $ ./listing5-2.out
 // Calling Listing 5-2:
 // followingProc was called
 // Listing 5-2 terminated.
 // ```
 
 #include "include.S"
+
+.data
+
+msg:
+	.asciz "followingProc was called\n"
+
+title:
+	.asciz "Listing 5-2"
 
 .code
 
@@ -41,11 +49,3 @@ _asmMain:
 
 	leave
 	ret
-
-.data
-
-msg:
-	.asciz "followingProc was called\n"
-
-title:
-	.asciz "Listing 5-2"

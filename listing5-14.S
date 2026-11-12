@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing5-14
-// $ ./listing5-14
+// $ ./listing5-14.out
 // Calling Listing 5-14:
 //                                         *, 20
 //                                         *, 19
@@ -34,6 +34,26 @@
 
 // size to allocate for the software stack
 stack_size = 128
+
+.data
+.balign 8
+
+stack:
+	.space stack_size, 0
+
+end_stack:
+
+index:
+	.word .-.
+
+space:
+	.asciz " "
+
+asterisk:
+	.asciz "*, %d\n"
+
+title:
+	.asciz "Listing 5-14"
 
 .code
 
@@ -103,23 +123,3 @@ _asmMain:
 	add sp, sp, #0x40
 
 	ret
-
-.data
-.balign 8
-
-stack:
-	.space stack_size, 0
-
-end_stack:
-
-index:
-	.word .-.
-
-space:
-	.asciz " "
-
-asterisk:
-	.asciz "*, %d\n"
-
-title:
-	.asciz "Listing 5-14"

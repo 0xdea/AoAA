@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing4-4
-// $ ./listing4-4
+// $ ./listing4-4.out
 // Calling Listing 4-4:
 // Input a string: Hello world
 // 0: hex value of char read: 6c6c6548
@@ -49,6 +49,29 @@ str    x4, [sp, #0x18]
 .endm
 
 maxLen = 0x100
+
+.data
+
+valToPrint:
+	.4byte .-.
+
+bufIndex:
+	.8byte .-.
+
+bufPtr:
+	.8byte .-.
+
+bytesRead:
+	.8byte .-.
+
+prompt:
+	.asciz "Input a string: "
+
+fmtStr:
+	.asciz "%d: hex value of char read: %x\n"
+
+titleStr:
+	.asciz "Listing 4-4"
 
 .text
 .balign 4
@@ -127,26 +150,3 @@ allDone:
 	ldr lr, [sp], #0x10
 
 	ret
-
-.data
-
-valToPrint:
-	.4byte .-.
-
-bufIndex:
-	.8byte .-.
-
-bufPtr:
-	.8byte .-.
-
-bytesRead:
-	.8byte .-.
-
-prompt:
-	.asciz "Input a string: "
-
-fmtStr:
-	.asciz "%d: hex value of char read: %x\n"
-
-titleStr:
-	.asciz "Listing 4-4"

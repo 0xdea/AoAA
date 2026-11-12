@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing5-7
-// $ ./listing5-7
+// $ ./listing5-7.out
 // Calling Listing 5-7:
 // address=0x1044dc000, value=42
 // Listing 5-7 terminated.
@@ -13,7 +13,7 @@
 //       size 0x0000000000000026
 //     offset 32768
 //      align 2^0 (1)
-// $ lldb listing5-7
+// $ lldb listing5-7.out
 // (lldb) image dump sections listing5-7
 // ...
 //   0x0000000000000006 data                   [0x0000000100008000-0x0000000100008026)  rw-  0x00008000 0x00000026 0x00000000 listing5-7.__DATA.__data
@@ -21,6 +21,17 @@
 // ```
 
 #include "include.S"
+
+.data
+
+staticvar:
+	.word 42
+
+fmt:
+	.asciz "address=%p, value=%d\n"
+
+title:
+	.asciz "Listing 5-7"
 
 .code
 
@@ -64,14 +75,3 @@ _asmMain:
 
 	leave
 	ret
-
-.data
-
-staticvar:
-	.word 42
-
-fmt:
-	.asciz "address=%p, value=%d\n"
-
-title:
-	.asciz "Listing 5-7"

@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing6-3
-// $ ./listing6-3
+// $ ./listing6-3.out
 // Calling Listing 6-3:
 // sin(pi) = 8.14137986335080e-13
 // sin(pi/2) = 1.00000000000000e+00
@@ -26,8 +26,49 @@
 
 .code
 
+.pool
+.balign 8
+
+pi:
+	.double 3.141592653588979
+
+pi2:
+	.double 1.5707963267949
+
+pi4:
+	.double 0.7853981639745
+
+pi8:
+	.double 0.39269908169872
+
+pi1_fmt:
+	.asciz "%s(pi) = %20.14e\n"
+
+pi2_fmt:
+	.asciz "%s(pi/2) = %20.14e\n"
+
+pi4_fmt:
+	.asciz "%s(pi/4) = %20.14e\n"
+
+pi8_fmt:
+	.asciz "%s(pi/8) = %20.14e\n\n"
+
+sin_str:
+	.asciz "sin"
+
+cos_str:
+	.asciz "cos"
+
+tan_str:
+	.asciz "tan"
+
+title:
+	.asciz "Listing 6-3"
+
 .global _getTitle
 .global _asmMain
+
+.balign 8
 
 // trampolines to the C stdlib math functions (necessary because adrl can't take the address
 // of a function that could be very far away, as the dynamic libraries probably are)
@@ -128,42 +169,3 @@ _asmMain:
 
 	leave
 	ret
-
-.pool
-.balign 8
-
-pi:
-	.double 3.141592653588979
-
-pi2:
-	.double 1.5707963267949
-
-pi4:
-	.double 0.7853981639745
-
-pi8:
-	.double 0.39269908169872
-
-pi1_fmt:
-	.asciz "%s(pi) = %20.14e\n"
-
-pi2_fmt:
-	.asciz "%s(pi/2) = %20.14e\n"
-
-pi4_fmt:
-	.asciz "%s(pi/4) = %20.14e\n"
-
-pi8_fmt:
-	.asciz "%s(pi/8) = %20.14e\n\n"
-
-sin_str:
-	.asciz "sin"
-
-cos_str:
-	.asciz "cos"
-
-tan_str:
-	.asciz "tan"
-
-title:
-	.asciz "Listing 6-3"
