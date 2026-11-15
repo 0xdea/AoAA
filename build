@@ -10,10 +10,13 @@
 # Options:
 # -c: assemble .S file to object code only
 #
+# Environment:
+# EXTRA_FLAGS: additional compiler flags (e.g., "-Werror -Wa,--fatal-warnings")
+#
 
 set -euo pipefail
 
-compiler="g++ -Wall -Wextra"
+compiler="g++ -Wall -Wextra ${EXTRA_FLAGS:-}"
 filename=""
 compileonly=false
 cppfile="listing1-4.cpp"

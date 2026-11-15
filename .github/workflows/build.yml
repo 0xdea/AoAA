@@ -1,0 +1,70 @@
+name: build
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gasfmt:
+    name: gasfmt
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: install-gasfmt
+        run: cargo install gasfmt --locked
+      - name: gasfmt-check
+        run: gasfmt --diff *.S
+
+  build:
+    name: build
+    runs-on: macos-latest
+    timeout-minutes: 10
+    steps:
+      - name: checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: build-listings
+        env:
+          EXTRA_FLAGS: -Werror -Wa,--fatal-warnings
+        run: |
+          g++ -Wall -Wextra $EXTRA_FLAGS -o listing1-1.out listing1-1.S
+          g++ -Wall -Wextra $EXTRA_FLAGS -o listing1-3.out listing1-2.cpp listing1-3.S
+          ./build -c listing7-1
+          for f in listing*.S; do
+            name="${f%.S}"
+            case "$name" in
+            listing1-1 | listing1-3 | listing7-1) continue ;;
+            esac
+            echo "::group::$name"
+            ./build "$name"
+            echo "::endgroup::"
+          done
+
+  zizmor:
+    name: zizmor
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: zizmor
+        uses: zizmorcore/zizmor-action@45d7276c9ca790aabd705e31ca99c6185c3e76dd # v0.8.1
+        with:
+          advanced-security: false
