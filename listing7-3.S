@@ -2,7 +2,7 @@
 //
 // ```
 // $ ./build listing7-3
-// $ ./listing7-3
+// $ ./listing7-3.out
 // Calling Listing 7-3:
 // ((x > y) && (z < t)) || (aa != bb)
 //  x  y  z  t aa bb Result
