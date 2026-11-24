@@ -64,12 +64,13 @@ _getTitle:
 
 // void StateMachine(void);
 //
-// Leaf procedure, no need to save LR on the stack.
+// Leaf procedure, no need to save LR on the stack. Likewise, we do not preserve
+// X19 and X20 even though they are technically non-volatile registers.
 StateMachine:
 	cmp state, #0
 	bne trystate1
 
-	// state 0: add w21 to w20 and switch to state 1
+	// state 0: add W21 to W20 and switch to state 1
 	add  w20, w20, w21
 	add  state, state, #1
 	b.al exit
@@ -78,7 +79,7 @@ trystate1:
 	cmp state, #1
 	bne trystate2
 
-	// state 1: subtract w21 from w20 and switch to state 2
+	// state 1: subtract W21 from W20 and switch to state 2
 	sub  w20, w20, w21
 	add  state, state, #1
 	b.al exit
@@ -87,13 +88,13 @@ trystate2:
 	cmp state, #2
 	bne mustbestate3
 
-	// state 2: multiply w20 by w21 and switch to state 3
+	// state 2: multiply W20 by W21 and switch to state 3
 	mul  w20, w20, w21
 	add  state, state, #1
 	b.al exit
 
 mustbestate3:
-	// state 3: divide w20 by w21 and switch back to state 0
+	// state 3: divide W20 by W21 and switch back to state 0
 	sdiv w20, w20, w21
 	mov  state, #0
 
